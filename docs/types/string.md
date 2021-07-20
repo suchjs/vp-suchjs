@@ -31,5 +31,6 @@ Such.as(":string:[\\u0041,\\u005a]"); // 输出类似：'LIDPDKGCJE'
 - `@` 运用函数
 
 ```javascript
-Such.as(":string:[65,90]:{3,5}:@concat('_')|repeat(5)|slice(0,-1)"); // 输出类似 `TSQ_TSQ_TSQ`
+Such.as(":string:[65,90]:{3,5}:@concat('_')|repeat(3)|slice(0,-1)"); 
+// 输出类似 `TSQ_TSQ_TSQ`
 ```
