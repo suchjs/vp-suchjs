@@ -87,11 +87,8 @@ Such.as(':url:#[protocol="https",ltd="com"]');
 返回一个邮件地址，它同样继承自 `:regexp`。
 
 ```javascript
-Such.as(":url");
-// 输出类似：'https://x93m.cn/AD.htm?mn_u=kji&7__b_=%EA%BA#_===_v__'
-// 如果想要控制精确的 url 值，可以增加针对分组的精确配置参数
-// 更多的命名分组，可以查看extends/recommend.ts里 url 类型的定义
-Such.as(':url:#[protocol="https",ltd="com"]');
+Such.as(":email"); // 生成类似：'3yh_meqy@o6tw1.com'
+Such.as(':email:#[domain="gmail.com"]'); // 生成类似： `7z4@gmail.com`
 ```
 
 因为 Suchjs 本身具备较好的扩展性，所以内置类型的嵌入主要以常用的一些类型为主，后续可能会继续加入更多类型，更多特定的类型请通过 API 以配置文件的方式，借助`Such.config`来实现。

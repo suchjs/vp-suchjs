@@ -43,6 +43,7 @@ module.exports = {
         ]
       },
       '/extTypes.md',
+      '/field.md',
       '/api.md'
     ],
     head: [

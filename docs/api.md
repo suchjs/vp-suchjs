@@ -23,10 +23,17 @@ description: suchjs接口
 
   ```javascript
   // 扩展的boolean类型
-  Such.define("boolean", function (options) {
-    // options提供了小写 `such` 对应 `Such` 类，上面挂载了内置的utils方法等。
-    const { such } = options;
+  Such.define("boolean", function (_, such) {
+    // 第二个参数提供了 Such 类，方便用它上面挂载的utils方法
+    // 也方便通过其它模拟数据来组合其它数据
     return such.utils.isOptional();
+  });
+  // 扩展一个rgb颜色类型
+  Such.define("color$rgb", function (_, such) {
+    // 因为rgb的值都是随机的0到255之间
+    // 所以可以定义一个0到255值中间的随机实例
+    const instance = such.instance(":int[0,255]");
+    return "rgb(" + [instance.a(), instance.a(), instance.a()].join(",") + ")";
   });
   ```
 
@@ -161,4 +168,170 @@ Suchjs 中的 `parser` 是针对的数据属性的解析，目前已有的内置
 
   - `parse: () => void` 在通过以上配置，获得解析后的字符串数据之后，由该 `parse` 方法进一步解析成可用的数据，由于在该 `parse` 方法中，会需要用到继承的父类 `Parser` 的通用方法，所以该 `parse` 方法不要使用箭头函数，以保证 `this` 的正确指向。
 
-  - `setting` 配置对象，目前暂时就提供 `frozen` 的布尔类型配置参数，使用了 `frozen` 表明该数据属性不能被重复设置。
+  - `setting` 配置对象，目前暂时就提供 `frozen` 的布尔类型配置参数，使用了 `frozen` 表明该数据属性不能被重复设置，可以重复设置的数据属性，比如配置属性，`#[a=1]:#[b=1]`，最终数据会进行 `merge` 合并。
+
+现在按照上面的方式来新增一个 `parser`，代码如下：
+
+```javascript
+// 定义一个解析器来解析形如 `(1,2,"hello,world",3,'good job!')`
+// 该格式以左小括号 `(` 开头，右小括号 `)` 结尾
+// 以英文逗号 `,` 为分隔
+// 因为字符串里可能存在英文逗号 `,`，所以需要设置 pattern 来做复杂匹配
+Such.parser("numberAndString", {
+  config: {
+    startTag: ["("],
+    endTag: [")"],
+    separator: ",",
+    pattern: /^\s*(?:(['"])(?:(?!\1)[^\\]|\\.)*\1|\d+)/,
+  },
+  parse() {
+    const { patterns } = this;
+    const data = [];
+    patterns.map((match) => {
+      // 字符串形式
+      let [value, quote] = match;
+      value = value.trimStart();
+      if (quote) {
+        data.push(value);
+      } else {
+        // 数字形式
+        data.push(Number(value));
+      }
+    });
+    return data;
+  },
+  setting: {
+    frozen: true,
+  },
+});
+// 定义好 `parser` 后，我们来定义一个自定义类型，并解析该 `parser` 的数据。
+Such.define("showdata", {
+  init() {
+    // 定义对解析器解析到的 numberAndString 做进一步处理
+    // addRule 对应的第一个参数名与定义的 parser 名保持一致
+    this.addRule("numberAndString", function (numAndStr) {
+      if (!numAndStr) {
+        return;
+      }
+      const numbers = [];
+      const strings = [];
+      numAndStr.map((val) => {
+        if (typeof val === "string") {
+          strings.push(val);
+        } else {
+          numbers.push(val);
+        }
+      });
+      return {
+        numbers,
+        strings,
+      };
+    });
+  },
+  generate(_, such) {
+    // 最终数据会被解析到params内，key为parser的name名称
+    const { numberAndString } = this.params;
+    const { numbers, strings } = numberAndString;
+    let ret = [];
+    const totalNum = numbers.length;
+    if (totalNum) {
+      const index = such.utils.makeRandom(0, totalNum - 1);
+      ret.push(`number:${numbers[index]}`);
+    }
+    const totalStr = strings.length;
+    if (totalStr) {
+      const index = such.utils.makeRandom(0, totalStr - 1);
+      ret.push(`string:${strings[index]}`);
+    }
+    return ret.join("|");
+  },
+});
+// 现在就可以用自定义的类型来模拟数据了
+Such.as(':showdata:(1, 2, "hello", 3, 4, "world")');
+// 将输出 `number:1|string:world`，`number:4|string:hello` 等等
+```
+
+### `Such.alias`
+
+定义类型别名，它的调用方式比较简单，用来对一些长类型名增加简写别名。
+
+`Such.alias(alias: string, fromType: string)`
+
+```javascript
+// 为integer类型增加一个别名int
+Such.alias("int", "integer");
+```
+
+### `Such.config`
+
+有了以上的三个方法，我们就可以很方便的对整个 Suchjs 支持的类型进行扩展了，为方便快速定义这些数据，Suchjs 提供了该方法来对数据进行加载。
+
+`Such.config(settings: TSuchSettings)`
+
+现在以示例代码的方式来描述 `settings` 的格式。
+
+```javascript
+Such.config({
+  // 这里对应会使用 `Such.parser` 方法进行调用
+  parsers: {
+    // key 为对应parser的名称，值为第二个解析配置参数
+    numberAndString: {
+      config: {
+        // ...代码可参考上方定义parser的章节
+      },
+    },
+  },
+  // 这里对应会使用 `Such.define` 方法进行调用
+  // 其中 key 为定义的type类型名称
+  // 对于数组value值，会以apply的方式进行参数展开
+  types: {
+    integer: ["number", "%d"],
+    boolean: function (_, such) {
+      return such.utils.isOptional();
+    },
+  },
+  // 这里会调用 `Such.alias` 来创建别名
+  // key为别名名称，value为原始类型名
+  alias: {
+    int: "integer",
+    bool: "boolean",
+  },
+  // extends: ['such:recommend'],
+  // 如果在nodejs环境中，还会支持extends扩展的配置
+  // 对应的是一个配置文件模块
+});
+```
+
+### `Such.instance`
+
+提供了一个直接生成 Such 模拟对象实例的静态方法，推荐使用它来创建实例，主要方便后续可能做的一些缓存优化等。
+
+```javascript
+const IDGenerator = Such.instance(":id");
+// 生成一个模拟数据
+IDGenerator.a(); // 1
+IDGenerator.a(); // 2
+```
+
+### `Such.assign`
+
+前面提到我们所有的数据模拟都支持 `@` 开头的函数调用以及 `#[key=value]` 方式的配置属性，那么如果我们想从外部注入函数调用时要用到的函数名和配置属性中的 value 值，这时候就需要用到 `Such.assign` 了。
+
+`Such.assign(key: string, value: unkown)`
+
+```javascript
+// 定义一个字符串的截字方法
+Such.assign("truncate", function (str, len) {
+  if (str.length > len) {
+    return str.slice(0, len) + "...";
+  }
+  return str;
+});
+// 使用
+Such.as(":string:{20}:@truncate(10)");
+// 输出类似：'tALIHe(|ff...'
+```
+
+以上基本就是 Suchjs 提供的主要 API 了，其它的 API 可能会随着版本的更迭进行增改。如果有好的意见，欢迎在 github 里提供反馈。
+
+Nodejs 环境下还有些基于数据缓存、加载与更新的一些 API，将会有单独的章节来说明。
