@@ -42,14 +42,8 @@ module.exports = {
           '/types/ref.md',
         ]
       },
-      {
-        text: '扩展类型',
-        link: '/exttypes/README.md'
-      },
-      {
-        text: 'API接口',
-        link: '/api/README.md'
-      }
+      '/extTypes.md',
+      '/api.md'
     ],
     head: [
       ['script', {
