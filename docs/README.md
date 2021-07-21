@@ -1,6 +1,6 @@
 ---
 lang: zh-CN
-title: 关于库
+title: 关于本库
 description: suchjs的设计指南
 ---
 

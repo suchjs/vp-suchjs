@@ -26,7 +26,7 @@ description: suchjs如何配置字段
   Such.as({
     // name字段可有可无
     "title?": ":string:{3,10}",
-    // list字段一定为数组，数组大小为0到5
+    // books字段一定为数组，数组大小为0到5
     "books{+0,5}": {
       date: ":date",
       author: ":string:{10,20}",

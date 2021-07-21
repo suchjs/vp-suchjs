@@ -1,7 +1,7 @@
 ---
 lang: zh-CN
 title: :ref
-description: suchjs内置类型string
+description: suchjs内置类型ref
 ---
 
 #### ref 类型说明
@@ -12,10 +12,10 @@ description: suchjs内置类型string
 
 ```javascript
 Such.as({
-  "firstName": "Michael",
-  "lastName": "Jordan",
-  "fullName": ":ref:&./firstName,./lastName:@join(' ')"
+  firstName: "Michael",
+  lastName: "Jordan",
+  fullName: ":ref:&./firstName,./lastName:@join(' ')",
 });
-// 生成值为 
+// 生成值为
 // {firstName: "Michael", lastName: "Jordan", fullName: "Michael Jordan"}
 ```
