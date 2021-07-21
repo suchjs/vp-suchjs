@@ -21,4 +21,4 @@ In the nodejs environment, suchjs has the ability to load configuration files, t
 
 ## Browser
 
-Copy the `dist/such.min.js` file in the project to the local, and then use it in the way of `UMD`.
+Copy the `dist/such.min.js` file in the project to the local, and then use it by the module of `UMD`.

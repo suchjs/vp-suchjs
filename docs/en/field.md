@@ -6,21 +6,21 @@ description: how to set the field
 
 ## How to configure the fields
 
-Usually our actual data simulation is based on the `json` object format, then we must configure the `key` of the data field. Suchjs supports the following configuration for the key:
+Usually our actual data mocking is based on the `json` object, then we need configure the `key` of the data field. Suchjs supports the following configuration for the field key:
 
 - `?` indicates that a field is not required, that is, the field may not be included in the generated data.
 
-- `{min[,max]}` represents the number of occurrences of the field, it is usually used in array configuration, but pay attention to some details of array field configuration:
+- `{min[,max]}` represents the number of occurrences of the field, it is usually used in array configuration, but pay attention to some details of the configuration:
 
-  1. When `min` is `0`, the entire field value will become `undefined`. If the array hits `0`, you still want to generate an empty array, you can use `+0` instead of `0`. Similarly, when the value of `min` is `1`, Suchjs will also generate the primitive type of `value` instead of generating an array. If you still want to generate an array of `value` values, you need to use `+1` instead . The meaning of `+` plus sign here means that the generated data is always an array.
+  1. When `min` is `0`, the field value may get a `undefined`. If the `min` did hits `0`, and you still want to get a field value of an empty array, you can use `+0` instead of `0`. Similarly, when the value of `min` is `1`, `Suchjs` will also generate the primitive type of `value` instead of generating an array. If you still want to generate an array of `value` values, you need to use `+1` instead. The meaning of `+` plus sign here means that the generated data is always an array.
 
-  2. When the `value` value of the field itself is also an array, the generated data will generate values ​​one by one in the order of appearance of the array. If you want to define the meaning of the array value is to take one of the items to generate, you can precede the `{` Add the identifier English colon `:`, such as `key:{3,5}`, which means to take one item of the array value and simulate an array of 3 to 5 items.
+  2. When the filed value itself is an array, the generated data will generate values ​​one by one in the order of appearance of the array. If you want to generate an array which it's items are all the same type by one of the field value's items, you can add the identifier colon `:` before the `{`, such as `key:{3,5}`, which means to take one item of the field value array and generate an array of 3 to 5 items by the item.
 
-  3. If this field is also optional, you can add a `?` symbol after the closing curly brace `}` at the end.
+  3. If this array field is also optional, you can add a `?` symbol after the closing curly brace `}` at the end.
 
-  4. Note that the minimum number `0` and the optional symbol `?` have different meanings. The field of `0` will always exist, while the field of `?` is not necessarily.
+  4. Note that the minimum number `0` and the optional symbol `?` have different meanings. When the minimum number is `0`, the field will always exist, even the value is `undefined`, while the field is setted by symobol `?`, the field may exist, and may not.
 
-  5. For the value of `value` that is not an array type, the data of the array type is finally generated according to the value of `value`. This may be different from the behavior of the `mockjs` library, for example, `mockjs` for string types, the result will be a string with the value repeated multiple times.
+  5. If the field value is not an array type, an array of the field value will be generated. This may be different from the behavior of the `mockjs` library, for example, in `mockjs`, the result will be a string with the value repeated multiple times, instead of an array of the value with a length same as the times.
 
   ```javascript
   Such.as({
@@ -53,7 +53,7 @@ Usually our actual data simulation is based on the `json` object format, then we
 
 ## Special value generation
 
-Since the analog data of Suchjs is described in string format, how to distinguish between normal strings and data types and attributes becomes more important. The analog data types agreed in Suchjs all start with `:`. If you have a string starting with a real colon `:`, you don’t want to be parsed as the start character of the data type. At this time, you need to convert `:` The escape character will be removed from the generated string. Examples are as follows:
+Since the data mocking of Suchjs is described in string format, how to distinguish between normal strings and data types & attributes becomes important. The data types in Suchjs all start with `:`, If you have a normal string also starting with a colon `:`, now you need to convert `:` with escaped `\\`. The escape character will be removed from the generated string at last. Examples are as follows:
 
 ```javascript
 Such.as("\\:number"); // => ':number'

@@ -6,7 +6,7 @@ description: suchjs built-in type number
 
 #### `:number` type description
 
-`:number` type is one of the most basic types built in suchjs. It supports the following data attributes:
+`:number` type is another one of the most basic built-in types. It supports the following data attributes:
 
 - `[min,max]` the size range is used to set the minimum and maximum values ​​of the number.
 
@@ -15,9 +15,9 @@ description: suchjs built-in type number
 Such.as(":number:[1,100]");
 // Numbers theoretically contain the maximum and minimum values ​​by default
 // Because of the random value floating point number, the probability of the maximum and minimum values ​​is very small
-// If you really do not want to include the maximum or minimum value, you can add the configuration attribute exclude
-// Configured as'min' to not include the minimum value, and configured as'max' to not include the maximum value
-// Configured as'min, max' or'both' as ​​the minimum and maximum values ​​are not included
+// If you really do not want to include the maximum or minimum value, you can add the configuration attribute `exclude`
+// Configured as 'min' to not include the minimum value, and configured as 'max' to not include the maximum value
+// Configured as 'min,max' or 'both' as ​​the minimum and maximum values ​​are both not included
 Such.as(":number:[1,100]:#[exclude='max']");
 ```
 

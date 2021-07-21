@@ -6,51 +6,59 @@ description: APIs of suchjs
 
 ### `Such.define`
 
-`Such.define` 是 Suchjs 自定义类型的入口方法，包括配置文件，都是调用该方法来增加自定义类型。它接受四种形式的参数，分别对应不同的情形。
+`Such.define` It is the entry method of the Suchjs custom type, including the configuration file, which is called to add the custom type. It accepts four types of parameters, corresponding to different situations.
 
-- 第一种形式：基于已有类型，通过固定某些数据属性来获得一种新类型，内置的扩展类型大多是通过这种方式来定义的。
+- The first form: Based on existing types, a new type is obtained by fixing certain data attributes. Most of the built-in extended types are defined in this way.
 
   `Such.define(newType: string, baseType: string, properties: string)`
 
   ```javascript
-  // 示例
+  // example
   Such.define("integer", "number", "%d");
   ```
 
-- 第二种形式：通过提供生成数据的 `generate` 函数来定义新类型，这种情况比较适合不需要提供任何数据属性参数的类型。
+- The second form: define a new type by providing the `generate` function to generate data. This case is more suitable for types that do not need to provide any data attribute parameters.
 
   `Such.define(newType: string, generate: (options: TSuchInject) => unkown)`
 
   ```javascript
-  // 扩展的boolean类型
+  // Extended boolean type
   Such.define("boolean", function (_, such) {
-    // 第二个参数提供了 Such 类，方便用它上面挂载的utils方法
-    // 也方便通过其它模拟数据来组合其它数据
+    // The second parameter provides the Such class, 
+    // which is convenient to use the utils method mounted on it
+    // It is also convenient to combine other data through other simulation data
     return such.utils.isOptional();
   });
-  // 扩展一个rgb颜色类型
+  // Extend an rgb color type
   Such.define("color$rgb", function (_, such) {
-    // 因为rgb的值都是随机的0到255之间
-    // 所以可以定义一个0到255值中间的随机实例
+    // Because the value of rgb is random between 0 and 255
+    // So you can define a random instance between 0 and 255
     const instance = such.instance(":int[0,255]");
     return "rgb(" + [instance.a(), instance.a(), instance.a()].join(",") + ")";
   });
   ```
 
-- 第三种形式：通过提供完整的配置参数来创建一个新类型，该方式接近于 Suchjs 内置基础类型的定义方式。
+- The third form: Create a new type by providing complete configuration parameters, which is close to the definition of Suchjs built-in basic types.
 
   `Such.define(newType: string, config: TMFactoryOptions)`
 
-  `TMFactoryOptions` 的定义如下：
+  The definition of `TMFactoryOptions` is as follows:
 
-  - `param` 可选，对应于第一种形式中的 `properties` 数据属性，相当于提供了默认的数据属性配置。
-  - `init(utils: typeof Such.utils)` 可选，初始化时要执行的方法，主要针对参数的解析和参数数据的格式化，为了保证 this 的指向，请勿使用箭头函数，参数 `utils` 指向 Such.utils。
-  - `genreate(options?: TSuchInject, such?: Such)` 必选，生成模拟数据最终要执行的方法，该方法接受一个 options 参数及 Such 类注入，其中 options `TSuchInject` 定义包含了以下参数：
-    - `datas` 运行到当前模拟字段时已经生成的整个模拟数据，数据以深度优先的方式逐步生成。
-    - `mocker` 当前数据使用的 mocker 对象实例，其上有 `parent` 父 mocker 对象，`root`根 mocker 对象，整个以树状的形式组织。同时对象上有 `storeData` 字段，可以用来存储 `mocker` 对象上需要保存的一些数据，比如 `:id` 类型就会保存上次生成的 id 值，方便下次生成时能保持数据值的更新。
-    - `dpath` 当前要生成的数据字段的路径值，类似于 `xpath` 的形式。
-  - `reGenerate` 可选，该种形式中会忽略该参数，第四种形式的定义方式可以用来覆盖原类型的 `generate` 方法。
-  - `configOptions` 可选，对应 `#[]` 的配置属性，可以用来设置某些参数的默认值和数据类型，与 `vue` 声明接受的属性参数时类似。
+  - `param` is optional, corresponding to the `properties` data attribute in the first form, which is equivalent to providing the default data attribute configuration.
+  
+  - `init(utils: typeof Such.utils)` is optional. The method to be executed during initialization is mainly for parameter parsing and parameter data formatting. In order to ensure the direction of this, please do not use arrow functions. The parameter `utils` Point to Such.utils.
+  
+  - `genreate(options?: TSuchInject, such?: Such)` Mandatory, the method to be finally executed to generate simulated data. This method accepts an options parameter and Such class injection. The definition of options `TSuchInject` contains the following parameters:
+    
+    - The entire simulation data that has been generated when `datas` runs to the current simulation field, the data is gradually generated in a depth-first manner.
+  
+    - The mocker object instance used by the current data of `mocker`, on which there is a parent mocker object of parent and a root mocker object of root, which are organized in a tree-like form. At the same time, there is a `storeData` field on the object, which can be used to store some data that needs to be saved on the `mocker` object. For example, the `:id` type will save the id value generated last time, so that the data value can be maintained during the next generation. Update.
+    
+    - `dpath` The current path value of the data field to be generated, similar to the form of `xpath`.
+  
+  - `reGenerate` is optional, this parameter will be ignored in this form, and the definition of the fourth form can be used to override the `generate` method of the original type.
+  
+  - `configOptions` is optional, corresponding to the configuration properties of `#[]`, which can be used to set the default value and data type of certain parameters, similar to the case when `vue` declares the accepted property parameters.
 
     ```javascript
     Such.define("datetime", {
@@ -126,57 +134,52 @@ description: APIs of suchjs
     });
     ```
 
-  - 第四种形式：与第三种方式类似，不过多增加了一个继承类型`baseType`参数，书写方式与第三种类似，这种情形目前比较少用。
-
-    `Such.define(newType: string, baseType: string, config: TMFactoryOptions)`
-
-    `config` 参数可以参考第三种形式的说明，在该方式定义下，`reGenerate` 的数据生成函数将可以替代 `baseType` 的生成函数，这样基本完全覆写了 `baseType`，这种需求一般比较少见，但接口依然给予了可以操作的可能性。
-
+- The fourth form: similar to the third method, but an additional inheritance type `baseType` parameter is added, and the writing method is similar to the third form. This situation is currently less used.
 ### `Such.parser`
 
-Suchjs 中的 `parser` 是针对的数据属性的解析，目前已有的内置 `parser` 包括：
+The `parser` in Suchjs is for the analysis of data attributes. The existing built-in `parser` include:
 
-- `[min,max]` 用来解析大小范围，如 `[1,100]`
-- `{least[,most]}` 用来解析长度大小，如 `{3}`, `{3,5}`
-- `%` 用来解析格式化，后接 `format` 格式，如数字类型的 `%.2f`，日期类型的 `%yyyy-mm-dd`
-- `/` 用来解析正则路径，后接 `pattern`，如正则的 `/\w/`
-- `&` 用来传递路径，间隔符为英文逗号 `,`，如 `:ref` 类型的 `&./firstName,./lastName`，，或者词典类型的数据地址 `&<dataDir>/dict.txt`
-- `@` 用来解析函数调用，间隔符为竖线 `|`，如 `@repeat(3)|join('')`
-- `#[key=value]` 用来解析参数配置，间隔符为英文逗号 `,`，如 `:id` 类型设置 `#[start=0,step=2]`
+- `[min,max]` is used to parse the size range, such as `[1,100]`
+- `{least[,most]}` is used to parse the length, such as `{3}`, `{3,5}`
+- `%` is used to parse and format, followed by `format` format, such as `%.2f` for number type and `%yyyy-mm-dd` for date type
+- `/` is used to parse the regular path, followed by `pattern`, such as the regular `/\w/`
+- `&` is used to pass the path, the separator is English comma`,`, such as `&./firstName,./lastName` of type `:ref`, or data address of dictionary type `&<dataDir>/dict .txt`
+- `@` is used to parse function calls, and the spacer is a vertical bar `|`, such as `@repeat(3)|join('')`
+- `#[key=value]` is used to parse the parameter configuration, the spacer is English comma `,`, such as `:id` type setting `#[start=0,step=2]`
 
-一般数据类型，这些基本的数据属性已经够用，但如果这些属性配置还不能满足你的需求，你就可以通过 `Such.parser` 新增一种数据属性。
+For general data types, these basic data attributes are sufficient, but if the configuration of these attributes does not meet your needs, you can add a new data attribute through `Such.parser`.
 
 `Such.parser(name: string, params: {config: IParserConfig, parse: () => void, setting: TObj})`
 
-各个参数的说明如下：
+The description of each parameter is as follows:
 
-- `name` 定义解析器的名称
+-`name` defines the name of the parser
 
-- `params` 解析器解析时用到的相关配置
+- The relevant configuration used by the `params` parser when parsing
 
-  - `config` 类型为 `IParserConfig`，该类型的定义为：
+  - The type of `config` is `IParserConfig`, which is defined as:
 
-    - `startTag` 字符串数组类型，表示 `parser` 的开始标记符
+    - `startTag` string array type, representing the start tag of `parser`
 
-    - `endTag` 字符串数组类型，表示 `parser` 的结束标记符
+    - `endTag` string array type, representing the end tag of `parser`
 
-    - `separator` 如果数据要支持分组，多个分组之间的间隔符，注意间隔符不能和多个数据属性自身使用的分隔符 `:` 相同
+    - `separator` If the data supports grouping, the separator between multiple groups, note that the separator cannot be the same as the separator `:` used by multiple data attributes
 
-    - `pattern` 正则表达式，对于分组，如果单纯的 `separator` 不能简单的分隔分组，就可以设置 `pattern` 来分隔分组
+    - `pattern` regular expression, for grouping, if a simple `separator` cannot simply separate the groups, you can set `pattern` to separate the groups
 
-    - `rule` 正则表达式，如果不能简单的使用开始和结束标记符来匹配到整个数据属性值，就可以设置 `rule` 来整体匹配。
+    - `rule` regular expression, if you can't simply use the start and end tags to match the entire data attribute value, you can set the `rule` to match the whole.
 
-  - `parse: () => void` 在通过以上配置，获得解析后的字符串数据之后，由该 `parse` 方法进一步解析成可用的数据，由于在该 `parse` 方法中，会需要用到继承的父类 `Parser` 的通用方法，所以该 `parse` 方法不要使用箭头函数，以保证 `this` 的正确指向。
+  - `parse: () => void` After the parsed string data is obtained through the above configuration, the `parse` method is further parsed into usable data, because in the `parse` method, it will need to be used The general method of the inherited parent class `Parser`, so the `parse` method should not use arrow functions to ensure the correct point of `this`.
 
-  - `setting` 配置对象，目前暂时就提供 `frozen` 的布尔类型配置参数，使用了 `frozen` 表明该数据属性不能被重复设置，可以重复设置的数据属性，比如配置属性，`#[a=1]:#[b=1]`，最终数据会进行 `merge` 合并。
+  - The `setting` configuration object. Currently, the boolean configuration parameter of `frozen` is provided temporarily. The use of `frozen` indicates that the data attribute cannot be set repeatedly, and the data attribute that can be set repeatedly, such as the configuration attribute, `#[a= 1]:#[b=1]`, the final data will be merged by `merge`.
 
-现在按照上面的方式来新增一个 `parser`，代码如下：
+Now add a `parser` according to the above method, the code is as follows:
 
 ```javascript
-// 定义一个解析器来解析形如 `(1,2,"hello,world",3,'good job!')`
-// 该格式以左小括号 `(` 开头，右小括号 `)` 结尾
-// 以英文逗号 `,` 为分隔
-// 因为字符串里可能存在英文逗号 `,`，所以需要设置 pattern 来做复杂匹配
+// Define a parser to parse the form `(1,2,"hello,world",3,'good job!')`
+// This format starts with a left parenthesis `(` and ends with a right parenthesis `)`
+// Separate by comma `,`
+// Because there may be English commas `,` in the string, you need to set the pattern to do complex matching
 Such.parser("numberAndString", {
   config: {
     startTag: ["("],
@@ -188,13 +191,13 @@ Such.parser("numberAndString", {
     const { patterns } = this;
     const data = [];
     patterns.map((match) => {
-      // 字符串形式
       let [value, quote] = match;
       value = value.trimStart();
       if (quote) {
+        // is a string
         data.push(value);
       } else {
-        // 数字形式
+        // is a number
         data.push(Number(value));
       }
     });
@@ -204,11 +207,11 @@ Such.parser("numberAndString", {
     frozen: true,
   },
 });
-// 定义好 `parser` 后，我们来定义一个自定义类型，并解析该 `parser` 的数据。
+// After defining `parser`, let's define a custom type and parse the data of the `parser`.
 Such.define("showdata", {
   init() {
-    // 定义对解析器解析到的 numberAndString 做进一步处理
-    // addRule 对应的第一个参数名与定义的 parser 名保持一致
+    // Define further processing of the numberAndString parsed by the parser
+    // The first parameter name corresponding to addRule is consistent with the defined parser name
     this.addRule("numberAndString", function (numAndStr) {
       if (!numAndStr) {
         return;
@@ -229,7 +232,7 @@ Such.define("showdata", {
     });
   },
   generate(_, such) {
-    // 最终数据会被解析到params内，key为parser的name名称
+    // The final data will be parsed into params, the key is the name of the parser
     const { numberAndString } = this.params;
     const { numbers, strings } = numberAndString;
     let ret = [];
@@ -246,92 +249,92 @@ Such.define("showdata", {
     return ret.join("|");
   },
 });
-// 现在就可以用自定义的类型来模拟数据了
+// Now you can use custom types to simulate data
 Such.as(':showdata:(1, 2, "hello", 3, 4, "world")');
-// 将输出 `number:1|string:world`，`number:4|string:hello` 等等
+// Will output `number:1|string:world`, `number:4|string:hello` etc.
 ```
 
 ### `Such.alias`
 
-定义类型别名，它的调用方式比较简单，用来对一些长类型名增加简写别名。
+Define type alias, its calling method is relatively simple, used to add abbreviated alias to some long type names.
 
 `Such.alias(alias: string, fromType: string)`
 
 ```javascript
-// 为integer类型增加一个别名int
+// Add an alias int for the integer type
 Such.alias("int", "integer");
 ```
 
 ### `Such.config`
 
-有了以上的三个方法，我们就可以很方便的对整个 Suchjs 支持的类型进行扩展了，为方便快速定义这些数据，Suchjs 提供了该方法来对数据进行加载。
+With the above three methods, we can easily extend the types supported by Suchjs. In order to quickly define these data, Suchjs provides this method to load the data.
 
 `Such.config(settings: TSuchSettings)`
 
-现在以示例代码的方式来描述 `settings` 的格式。
+Now describe the format of `settings` in the form of sample code.
 
 ```javascript
 Such.config({
-  // 这里对应会使用 `Such.parser` 方法进行调用
+  // Here the corresponding call will be made using the `Such.parser` method
   parsers: {
-    // key 为对应parser的名称，值为第二个解析配置参数
+    // key is the name of the corresponding parser, and the value is the second parsing configuration parameter
     numberAndString: {
       config: {
-        // ...代码可参考上方定义parser的章节
+        // ...The code can refer to the chapter defining the parser above
       },
     },
   },
-  // 这里对应会使用 `Such.define` 方法进行调用
-  // 其中 key 为定义的type类型名称
-  // 对于数组value值，会以apply的方式进行参数展开
+  // Correspondingly, the `Such.define` method will be used to call
+  // where key is the name of the defined type
+  // For the array value value, the parameter will be expanded in the apply way
   types: {
     integer: ["number", "%d"],
     boolean: function (_, such) {
       return such.utils.isOptional();
     },
   },
-  // 这里会调用 `Such.alias` 来创建别名
-  // key为别名名称，value为原始类型名
+  // This will call `Such.alias` to create an alias
+  // key is the alias name, value is the original type name
   alias: {
     int: "integer",
     bool: "boolean",
   },
   // extends: ['such:recommend'],
-  // 如果在nodejs环境中，还会支持extends扩展的配置
-  // 对应的是一个配置文件模块
+  // If in the nodejs environment, the configuration of extends extension will also be supported
+  // Corresponds to a configuration file module
 });
 ```
 
 ### `Such.instance`
 
-提供了一个直接生成 Such 模拟对象实例的静态方法，推荐使用它来创建实例，主要方便后续可能做的一些缓存优化等。
+Provides a static method to directly generate Such simulation object instance, it is recommended to use it to create an instance, mainly to facilitate some cache optimizations that may be done later.
 
 ```javascript
 const IDGenerator = Such.instance(":id");
-// 生成一个模拟数据
+// Generate a simulation data
 IDGenerator.a(); // 1
 IDGenerator.a(); // 2
 ```
 
 ### `Such.assign`
 
-前面提到我们所有的数据模拟都支持 `@` 开头的函数调用以及 `#[key=value]` 方式的配置属性，那么如果我们想从外部注入函数调用时要用到的函数名和配置属性中的 value 值，这时候就需要用到 `Such.assign` 了。
+As mentioned earlier, all of our data simulations support function calls starting with `@` and configuration properties in the way of `#[key=value]`, so if we want to inject the function names and configuration properties that are used when function calls are externally injected At this time, you need to use `Such.assign`.
 
 `Such.assign(key: string, value: unkown)`
 
 ```javascript
-// 定义一个字符串的截字方法
+// Define a string truncation method
 Such.assign("truncate", function (str, len) {
   if (str.length > len) {
     return str.slice(0, len) + "...";
   }
   return str;
 });
-// 使用
+// use it
 Such.as(":string:{20}:@truncate(10)");
-// 输出类似：'tALIHe(|ff...'
+// Output is similar to：'tALIHe(|ff...'
 ```
 
-以上基本就是 Suchjs 提供的主要 API 了，其它的 API 可能会随着版本的更迭进行增改。如果有好的意见，欢迎在 github 里提供反馈。
+The above is basically the main API provided by Suchjs, and other APIs may be added and changed as the version changes. If you have any good comments, please feel free to provide feedback in github.
 
-Nodejs 环境下还有些基于数据缓存、加载与更新的一些 API，将会有单独的章节来说明。
+There are also some APIs based on data caching, loading and updating in the Nodejs environment, which will be explained in a separate chapter.

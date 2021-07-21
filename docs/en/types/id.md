@@ -6,9 +6,9 @@ description: suchjs built-in type id
 
 #### `:id` type description
 
-`:id` the type can be used to simulate the auto-increment id of the database. After the length parameter property is configured, it can also be used to simulate a `range` range array.
+`:id` the type can be used to mock the auto-increment id of the database. If the length `data attribute` is also setted, it can be used to mock a `range` array.
 
-- `#[start=1, step=2]` configure the start value and step.
+- `#[start=1, step=2]` configure the `start` value and the `step`.
 
 ```javascript
 // The configuration of `:id` has two parameters
@@ -21,7 +21,7 @@ instance.a(); // `2`
 instance.a(); // `4`
 ```
 
-- `{min[,max]}` set the number of id, the data returned at this time is an array of multiple auto-increment id.
+- `{min[,max]}` set how much the number of ids you want to make, return an array of multiple auto-increment id.
 
 ```javascript
 // return an array of multiple auto-incrementing ids

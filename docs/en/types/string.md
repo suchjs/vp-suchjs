@@ -6,9 +6,9 @@ description: suchjs built-in type string
 
 #### `:string` type description
 
-`:string` type is one of the most basic types built in suchjs, and it supports the following data attributes:
+`:string` type is one of the most basic built-in types, and it supports the following data attributes:
 
-- `{min[,max]}` the length attribute is used to set the length of the string.
+- `{min[,max]}` the length `data attribute` is used to set the length of the string.
 
 ```javascript
 // Set the length to 3 to 5 characters
@@ -17,7 +17,7 @@ Such.as(":string:{3,5}");
 Such.as(":string:{10}");
 ```
 
-- `[]` the size range attribute, used to set the unicode code point range
+- `[]` the size range `data attribute`, used to set the range of the unicode code point.
 
 ```javascript
 // Set the code point range from 65 to 90, that is, capital letters
@@ -29,7 +29,7 @@ Such.as(":string:[65-90,95,97-122]"); // The output is similar to: 'lDc_aKlP'
 Such.as(":string:[\\u0041,\\u005a]"); // The output is similar to: 'LIDPDKGCJE'
 ```
 
-- `@` use modifier functions
+- `@` set function calls
 
 ```javascript
 Such.as(":string:[65,90]:{3,5}:@concat('_')|repeat(3)|slice(0,-1)");

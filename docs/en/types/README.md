@@ -1,5 +1,5 @@
 ---
 lang: zh-CN
-title: Builtin types
+title: Built-in types
 description: All the built-in types
 ---

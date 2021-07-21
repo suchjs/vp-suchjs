@@ -6,7 +6,7 @@ description: suchjs built-in extend type
 
 ### `:boolean`
 
-Returns a Boolean value, true or false.
+Returns a boolean value, true or false.
 
 ```javascript
 Such.as(":boolean"); // true|false
@@ -28,7 +28,7 @@ Returns an integer value.
 Such.as(":integer:[100,200]"); // 125
 ```
 
-`:integer` the type inherits from the `:number` type, which is defined by the api `Such.define` provided by Suchjs, and the way of definition is like, `Such.define("integer", "number", "%d")`, which is equivalent On the basis of the number type, the formatting attribute parameters are fixed.
+`:integer` the type inherits from the `:number` type, which is defined by the api `Such.define` provided by Suchjs, and the way of definition is like: `Such.define("integer", "number", "%d")`, which is equivalent to a number type with the formatting `data attribute` fixed by `%d`.
 
 ### `:int`
 
@@ -48,7 +48,7 @@ Such.as(":percent"); // '72%'
 
 ### `:uppercase`
 
-Returns a string of uppercase letters, which is defined as `Such.define('uppercase','string','[65,90]')`, which is equivalent to restricting the unicode code on the basis of the string type The point range is 65 to 90, that is, capital letters.
+Returns a string of uppercase letters, which is defined as `Such.define('uppercase','string','[65,90]')`, which is equivalent to a string type with the unicode code point from 65 to 90, that is, capital letters.
 
 ```javascript
 Such.as(":uppercase"); // 'IGSDLD'
@@ -56,7 +56,7 @@ Such.as(":uppercase"); // 'IGSDLD'
 
 ### `:lowercase`
 
-Returns a lowercase letter string, which is defined as `Such.define('lowercase','string','[97,122]')`, which is equivalent to restricting the unicode code point range on the basis of the string type It is 97 to 122, that is, lowercase letters.
+Returns a lowercase letter string, which is defined as `Such.define('lowercase','string','[97,122]')`, which is equivalent to to a string type with the unicode code point from 97 to 122, that is, lowercase letters.
 
 ```javascript
 Such.as(":lowercase"); // 'augdkoa'
@@ -64,7 +64,7 @@ Such.as(":lowercase"); // 'augdkoa'
 
 ### `:alphaNumericDash`
 
-Return a string consisting of numbers, English letters and underscores, and its definition method is `Such.define('alphaNumericDash','string','[48-57,97-122,65-90,95]') `, which is equivalent to limiting the code point range of unicode based on the string type. Numbers, lowercase letters, uppercase letters, and underscores \_, which is equivalent to the `\w` character set of regular expressions.
+Return a string consisting of numbers, english letters and underscores, and its definition method is `Such.define('alphaNumericDash','string','[48-57,97-122,65-90,95]') `, which is equivalent to limiting the code point range of unicode based on the string type. Numbers, lowercase letters, uppercase letters, and underscores \_, which is equivalent to the `\w` character set of regular expressions.
 
 ```javascript
 Such.as(":lowercase"); // 'A9dkI_1'
@@ -91,4 +91,4 @@ Such.as(":email"); // The output is similar to: '3yh_meqy@o6tw1.com'
 Such.as(':email:#[domain="gmail.com"]'); // The output is similar to: `7z4@gmail.com`
 ```
 
-Because Suchjs itself has good extensibility, the embedding of built-in types is mainly based on some commonly used types, and more types may continue to be added in the future. For more specific types, please use the API to configure files, with the help of `Such .config` to achieve.
+Because Suchjs itself has good extensibility, the embedding of built-in types is mainly based on some commonly used types, and more types may continue to be added in the future. For more specific types, please use the API to configure files, with the help of `Such.config` to achieve.

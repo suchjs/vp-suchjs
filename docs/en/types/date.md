@@ -6,21 +6,21 @@ description: suchjs built-in type 'date'
 
 #### `:date` type description
 
-`:date` type is one of the data types we encounter. This type of js supports the following data attributes for the type:
+`:date` type is one of the most common data types. It supports the following data attributes:
 
-- `[begin,end]` date range, used to set the start and end time range of the date.
+- `[begin,end]` date range, used to set the begin and end time range of the date.
 
 ```javascript
 // Set the date and time range from 2010 to 2020
-// pay attention to the range in symbol `,` without spaces in between
+// Pay attention to the range in symbol `,` without spaces in between
 Such.as(":date:[2010,2020]");
-// Suchjs internally supports a basic version similar to php`strtotime
+// Suchjs internally supports a basic version similar to php's method `strtotime
 // So you can write various date and time formats more conveniently
 // As shown below, the current date starts from tomorrow to the next six months
 Such.as(":date:['tomorrow','+6 months']");
 ```
 
-- `%` formatting, the date type is formatted as `yyyy-mm-dd` year, month, and day by default, but this may not usually be the desired data format, so you need to format the date.
+- `%` formatting, by default, the date type is formatted as `yyyy-mm-dd`, year-month-day, but this may usually not what you want to get, so you need to set a formatting to format the date.
 
 ```javascript
 // set the date to the range from yesterday to tomorrow,
