@@ -1,4 +1,5 @@
 module.exports = {
+  base: '/vp-suchjs/',
   lang: 'zh-CN',
   title: 'Suchjs文档',
   description: 'Suchjs目标是成为一个易扩展、声明式的强大mock库，基于typescript编写',
