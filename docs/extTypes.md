@@ -91,4 +91,14 @@ Such.as(":email"); // 生成类似：'3yh_meqy@o6tw1.com'
 Such.as(':email:#[domain="gmail.com"]'); // 生成类似： `7z4@gmail.com`
 ```
 
+### `:color$hex`
+
+返回一个16进制的颜色值，支持两个参数配置，`lowercase`，为`true`时生成的颜色值为小写，否则为大写。`argb`，为`true`时，返回8位的`argb`格式颜色值，否则为`rgb`格式的6位颜色值。
+
+```javascript
+Such.as(":color$hex"); // 生成类似：'#B22AB0'
+Such.as(':color$hex:#[lowcase=true,argb=true]'); // 生成类似： `#92131a73`
+```
+
 因为 Suchjs 本身具备较好的扩展性，所以内置类型的嵌入主要以常用的一些类型为主，后续可能会继续加入更多类型，更多特定的类型请通过 API 以配置文件的方式，借助`Such.config`来实现。
+
