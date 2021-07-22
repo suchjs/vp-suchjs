@@ -6,18 +6,18 @@ description: APIs of suchjs
 
 ### `Such.define`
 
-`Such.define` It is the entry method of the Suchjs custom type, including the configuration file, which is called to add the custom type. It accepts four types of parameters, corresponding to different situations.
+`Such.define` It is the entry method to difine a custom type, including a configuration data called by API `Such.config`, are called it to add data types. It accepts four kinds of parameters, corresponding to different situations.
 
-- The first form: Based on existing types, a new type is obtained by fixing certain data attributes. Most of the built-in extended types are defined in this way.
+- The first: Based on existing types, a new type is obtained by fixing certain data attributes. Most of the built-in extended types in library are defined in this way.
 
-  `Such.define(newType: string, baseType: string, properties: string)`
+  `Such.define(newType: string, baseType: string, attributes: string)`
 
   ```javascript
   // example
   Such.define("integer", "number", "%d");
   ```
 
-- The second form: define a new type by providing the `generate` function to generate data. This case is more suitable for types that do not need to provide any data attribute parameters.
+- The second: Define a new type by providing the `generate` function to generate data. This way is more suitable for types that do not need to provide any data attribute parameters.
 
   `Such.define(newType: string, generate: (options: TSuchInject) => unkown)`
 
@@ -38,27 +38,27 @@ description: APIs of suchjs
   });
   ```
 
-- The third form: Create a new type by providing complete configuration parameters, which is close to the definition of Suchjs built-in basic types.
+- The third: Create a new type by providing complete configuration parameters, which is close to the definition how the library define built-in basic types.
 
   `Such.define(newType: string, config: TMFactoryOptions)`
 
   The definition of `TMFactoryOptions` is as follows:
 
-  - `param` is optional, corresponding to the `properties` data attribute in the first form, which is equivalent to providing the default data attribute configuration.
+  - `param` optional, corresponding to the `attributes` data attribute in the first form, which is equivalent to providing the default `data attribute`s.
   
-  - `init(utils: typeof Such.utils)` is optional. The method to be executed during initialization is mainly for parameter parsing and parameter data formatting. In order to ensure the direction of this, please do not use arrow functions. The parameter `utils` Point to Such.utils.
+  - `init(utils: typeof Such.utils)` optional, the method to be executed during initialization, is mainly for `data attribute` parsing and formatting. In order to ensure the scope of `this`, please do not use arrow functions. The parameter `utils` are injected by `Such.utils`.
   
-  - `genreate(options?: TSuchInject, such?: Such)` Mandatory, the method to be finally executed to generate simulated data. This method accepts an options parameter and Such class injection. The definition of options `TSuchInject` contains the following parameters:
+  - `genreate(options?: TSuchInject, such?: Such)` required, the method to be finally executed to generate mocking data. This method accepts an options parameter and Such class injection. The definition of options `TSuchInject` contains the following parameters:
     
-    - The entire simulation data that has been generated when `datas` runs to the current simulation field, the data is gradually generated in a depth-first manner.
+    - `datas` The entire mocking data that has been generated when the `mocker` runs to the current field, the data is gradually generated in a depth-first manner.
   
-    - The mocker object instance used by the current data of `mocker`, on which there is a parent mocker object of parent and a root mocker object of root, which are organized in a tree-like form. At the same time, there is a `storeData` field on the object, which can be used to store some data that needs to be saved on the `mocker` object. For example, the `:id` type will save the id value generated last time, so that the data value can be maintained during the next generation. Update.
+    - `mocker` The mocker object instance used by the current field, which has a `parent` mocker object and a `root` mocker object, organized in a tree-like structure. At the same time, there is a `storeData` field on the object, which can be used to store some data that needs to be saved on the `mocker` object. For example, the `:id` type will save the id value generated last time, so that the data value can be maintained during the next generation, keep the data in updated.
     
-    - `dpath` The current path value of the data field to be generated, similar to the form of `xpath`.
+    - `dpath` The current path value of the data field to be generated, similar to xml's `xpath`.
+
+  - `reGenerate` optional, this parameter will be ignored in this form, and the definition of next, the fourth form, can be used to override the `generate` method of the original type.
   
-  - `reGenerate` is optional, this parameter will be ignored in this form, and the definition of the fourth form can be used to override the `generate` method of the original type.
-  
-  - `configOptions` is optional, corresponding to the configuration properties of `#[]`, which can be used to set the default value and data type of certain parameters, similar to the case when `vue` declares the accepted property parameters.
+  - `configOptions` optional, corresponding to the configuration `data attribute` of `#[]`, which can be used to set the default value and data type of certain parameters, similar to the `vue` how to declares the accepted property parameters in the child components.
 
     ```javascript
     Such.define("datetime", {
@@ -134,7 +134,7 @@ description: APIs of suchjs
     });
     ```
 
-- The fourth form: similar to the third method, but an additional inheritance type `baseType` parameter is added, and the writing method is similar to the third form. This situation is currently less used.
+- The fourth: similar to the third form, but an additional inheritance type `baseType` parameter is added. This form is currently less used.
 ### `Such.parser`
 
 The `parser` in Suchjs is for the analysis of data attributes. The existing built-in `parser` include:
