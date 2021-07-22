@@ -24,7 +24,7 @@ description: APIs of suchjs
   ```javascript
   // Extended boolean type
   Such.define("boolean", function (_, such) {
-    // The second parameter provides the Such class, 
+    // The second parameter provides the Such class,
     // which is convenient to use the utils method mounted on it
     // It is also convenient to combine other data through other simulation data
     return such.utils.isOptional();
@@ -45,19 +45,19 @@ description: APIs of suchjs
   The definition of `TMFactoryOptions` is as follows:
 
   - `param` optional, corresponding to the `attributes` data attribute in the first form, which is equivalent to providing the default `data attribute`s.
-  
+
   - `init(utils: typeof Such.utils)` optional, the method to be executed during initialization, is mainly for `data attribute` parsing and formatting. In order to ensure the scope of `this`, please do not use arrow functions. The parameter `utils` are injected by `Such.utils`.
-  
+
   - `genreate(options?: TSuchInject, such?: Such)` required, the method to be finally executed to generate mocking data. This method accepts an options parameter and Such class injection. The definition of options `TSuchInject` contains the following parameters:
-    
+
     - `datas` The entire mocking data that has been generated when the `mocker` runs to the current field, the data is gradually generated in a depth-first manner.
-  
+
     - `mocker` The mocker object instance used by the current field, which has a `parent` mocker object and a `root` mocker object, organized in a tree-like structure. At the same time, there is a `storeData` field on the object, which can be used to store some data that needs to be saved on the `mocker` object. For example, the `:id` type will save the id value generated last time, so that the data value can be maintained during the next generation, keep the data in updated.
-    
+
     - `dpath` The current path value of the data field to be generated, similar to xml's `xpath`.
 
   - `reGenerate` optional, this parameter will be ignored in this form, and the definition of next, the fourth form, can be used to override the `generate` method of the original type.
-  
+
   - `configOptions` optional, corresponding to the configuration `data attribute` of `#[]`, which can be used to set the default value and data type of certain parameters, similar to the `vue` how to declares the accepted property parameters in the child components.
 
     ```javascript
@@ -135,43 +135,50 @@ description: APIs of suchjs
     ```
 
 - The fourth: similar to the third form, but an additional inheritance type `baseType` parameter is added. This form is currently less used.
+
 ### `Such.parser`
 
-The `parser` in Suchjs is for the analysis of data attributes. The existing built-in `parser` include:
+The `parser` in Suchjs is for the analysis of `data attribute`s. The built-in `parser`s include:
 
 - `[min,max]` is used to parse the size range, such as `[1,100]`
-- `{least[,most]}` is used to parse the length, such as `{3}`, `{3,5}`
-- `%` is used to parse and format, followed by `format` format, such as `%.2f` for number type and `%yyyy-mm-dd` for date type
-- `/` is used to parse the regular path, followed by `pattern`, such as the regular `/\w/`
-- `&` is used to pass the path, the separator is English comma`,`, such as `&./firstName,./lastName` of type `:ref`, or data address of dictionary type `&<dataDir>/dict .txt`
-- `@` is used to parse function calls, and the spacer is a vertical bar `|`, such as `@repeat(3)|join('')`
-- `#[key=value]` is used to parse the parameter configuration, the spacer is English comma `,`, such as `:id` type setting `#[start=0,step=2]`
 
-For general data types, these basic data attributes are sufficient, but if the configuration of these attributes does not meet your needs, you can add a new data attribute through `Such.parser`.
+- `{least[,most]}` is used to parse the length, such as `{3}`, `{3,5}`
+
+- `%` is used to parse and format, followed by the `format` string, such as `%.2f` for number type and `%yyyy-mm-dd` for date type
+
+- `/` is used to parse the regular expression, followed by the `pattern` string, such as the regular expression `/\w/`
+
+- `&` is used to parse the path, multiple paths can separate by the comma `,`, such as `&./firstName,./lastName` of the `:ref` type, or file path of dictionary type `&<dataDir>/dict.txt`
+
+- `@` is used to parse function calls, and multiple functions separate by the vertical bar `|` as a pipe, such as `@repeat(3)|join('')`
+
+- `#[key=value]` is used to parse the configuration, also can use a comma `,` to separate multiple key-value pairs, such as a `:id` type can set a configuration like `#[start=0,step=2]`
+
+For general data types, these basic `data attribute`s are sufficient, but if you meet some needs can't cover them by those, you may need to add a new `data attribute` parser through the API `Such.parser`.
 
 `Such.parser(name: string, params: {config: IParserConfig, parse: () => void, setting: TObj})`
 
 The description of each parameter is as follows:
 
--`name` defines the name of the parser
+- `name` defines the name of the parser, it also used for the parsed result's key.
 
-- The relevant configuration used by the `params` parser when parsing
+- `params` the main parameter to define how the parser parsing data.
 
-  - The type of `config` is `IParserConfig`, which is defined as:
+  - `config` is a typescript type `IParserConfig`, which is defined as:
 
     - `startTag` string array type, representing the start tag of `parser`
 
     - `endTag` string array type, representing the end tag of `parser`
 
-    - `separator` If the data supports grouping, the separator between multiple groups, note that the separator cannot be the same as the separator `:` used by multiple data attributes
+    - `separator` If the data supports grouping, the separator between multiple groups, note that the separator can't be the same as the separator `:` that has ever used by the `data attribute`s
 
-    - `pattern` regular expression, for grouping, if a simple `separator` cannot simply separate the groups, you can set `pattern` to separate the groups
+    - `pattern` a regular expression, for grouping, if a simple `separator` parameter can't simply separate the groups, you can set a `pattern` to separate the groups
 
-    - `rule` regular expression, if you can't simply use the start and end tags to match the entire data attribute value, you can set the `rule` to match the whole.
+    - `rule` a regular expression, if you can't simply use the start and end tags to match the entire data attribute value, you can set the `rule` to match the whole.
 
   - `parse: () => void` After the parsed string data is obtained through the above configuration, the `parse` method is further parsed into usable data, because in the `parse` method, it will need to be used The general method of the inherited parent class `Parser`, so the `parse` method should not use arrow functions to ensure the correct point of `this`.
 
-  - The `setting` configuration object. Currently, the boolean configuration parameter of `frozen` is provided temporarily. The use of `frozen` indicates that the data attribute cannot be set repeatedly, and the data attribute that can be set repeatedly, such as the configuration attribute, `#[a= 1]:#[b=1]`, the final data will be merged by `merge`.
+  - `setting` a configuration object. Currently, just a boolean field `frozen` is provided. if the `frozen` is true, then the `data attribute` can't be set repeatedly, otherwise the `data attribute` can be set twice more, such as the configuration attribute, `#[a=1]:#[b=1]`, the final data will be merged the same to `#[a=1,b=1]`.
 
 Now add a `parser` according to the above method, the code is as follows:
 
@@ -256,7 +263,7 @@ Such.as(':showdata:(1, 2, "hello", 3, 4, "world")');
 
 ### `Such.alias`
 
-Define type alias, its calling method is relatively simple, used to add abbreviated alias to some long type names.
+Define type alias, it's just need provide two arguments, one is the abbreviated alias name, the other is the actual existing long type name.
 
 `Such.alias(alias: string, fromType: string)`
 
@@ -267,11 +274,11 @@ Such.alias("int", "integer");
 
 ### `Such.config`
 
-With the above three methods, we can easily extend the types supported by Suchjs. In order to quickly define these data, Suchjs provides this method to load the data.
+With the above three methods, we can easily extend the types supported by Suchjs. In order to quickly define these data all, Suchjs provides this method:
 
 `Such.config(settings: TSuchSettings)`
 
-Now describe the format of `settings` in the form of sample code.
+What the `settings` look like is shown in the below code.
 
 ```javascript
 Such.config({
@@ -307,7 +314,7 @@ Such.config({
 
 ### `Such.instance`
 
-Provides a static method to directly generate Such simulation object instance, it is recommended to use it to create an instance, mainly to facilitate some cache optimizations that may be done later.
+It's a static method to directly generate a `Such` object instance instead of `new Such`, it is recommended, mainly to facilitate some cache optimizations that may be done later.
 
 ```javascript
 const IDGenerator = Such.instance(":id");
@@ -318,7 +325,7 @@ IDGenerator.a(); // 2
 
 ### `Such.assign`
 
-As mentioned earlier, all of our data simulations support function calls starting with `@` and configuration properties in the way of `#[key=value]`, so if we want to inject the function names and configuration properties that are used when function calls are externally injected At this time, you need to use `Such.assign`.
+As mentioned earlier, all of our data mocking support function calls `data attribute` starting with `@` and data configuration `data attribute` like `#[key=value]`, so if you want to inject your own function call names and data configuration's value data variable, you need to use `Such.assign`.
 
 `Such.assign(key: string, value: unkown)`
 
@@ -335,6 +342,6 @@ Such.as(":string:{20}:@truncate(10)");
 // Output is similar to：'tALIHe(|ff...'
 ```
 
-The above is basically the main API provided by Suchjs, and other APIs may be added and changed as the version changes. If you have any good comments, please feel free to provide feedback in github.
+The above is basically the main APIs provided by `Suchjs`, and other APIs may be added and changed as the library's version changes. If you have any good comments, please feel free to provide feedback `in github`.
 
 There are also some APIs based on data caching, loading and updating in the Nodejs environment, which will be explained in a separate chapter.

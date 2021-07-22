@@ -1,6 +1,6 @@
 ---
 lang: en-US
-title: About the library
+title: About
 description: Design philosophy of Suchjs
 ---
 
@@ -14,7 +14,7 @@ In the front-end, there are some mature libraries for mocking data, such as `moc
 
 ### Data Attribute
 
-Each data type has its own features. For example, numbers, it have sizes and formats; strings, it have length, and belong to some unicode code points. `suchjs` extracts the common feature of thoes data types, which we named `data attribute`s as mentioned above. Now, a mocking type is a combination of thoes `data attribute`, one or two or more. `suchjs` use the colon `:` to separate the `data attribute`s.(Note: For the convenience of writing, most time, you can drop the separator between the first two `data attribute`s, because the first `data attribute` is always a `type`, it can matched exactly, and won't affect the parsing). 
+Each data type has its own features. For example, numbers, it have sizes and formats; strings, it have length, and belong to some unicode code points. `suchjs` extracts the common feature of thoes data types, which we named `data attribute`s as mentioned above. Now, a mocking type is a combination of thoes `data attribute`, one or two or more. `suchjs` use the colon `:` to separate the `data attribute`s.(Note: For the convenience of writing, most time, you can drop the separator between the first two `data attribute`s, because the first `data attribute` is always a `type`, it can matched exactly, and won't affect the parsing).
 
 The built-in `data attribute`s in `suchjs` include the following:
 
@@ -22,7 +22,7 @@ The built-in `data attribute`s in `suchjs` include the following:
 
 - Length -- The length `data attribute` use a format of `{min[,max]}`, which is usually used for the string and array data. For example, if the length of the string is 3, it can be represented by `{3}`, and the length is 10 up to 20, it can be represented by `{10,20}`
 
-- Size -- The size `data attribute` use a format of `[min,max]`, which usually represents a range of values. For a number, it means the minimum and maximum value of the number. If the size of the number is 10 to 20, it is represented by `[10,20]`. If it represents a fixed number, such as the number 3, it is represented by `[3,3]`, of course, if there is no other `data attribute` configuration, it should be written directly with the number `3`. For character strings, it usually represents the unicode code point range of the character. For example, the code point range of uppercase letters is 65 to 90, it can be written as `[65,90]`, if there are multiple groups, the group writing syntax can be used, such as representing both uppercase and lowercase letters, it can be written as `[65-90,97-122]`. For a date, it means a date range, for example, from 2012 to 2022, it is expressed as `[2012,2022]`, `suchjs` has built-in support for a more powerful date formating  similar to php's method `strtotime`, for example, 5 years before and after, can be expressed as `['-5 years','+5 years']`.
+- Size -- The size `data attribute` use a format of `[min,max]`, which usually represents a range of values. For a number, it means the minimum and maximum value of the number. If the size of the number is 10 to 20, it is represented by `[10,20]`. If it represents a fixed number, such as the number 3, it is represented by `[3,3]`, of course, if there is no other `data attribute` configuration, it should be written directly with the number `3`. For character strings, it usually represents the unicode code point range of the character. For example, the code point range of uppercase letters is 65 to 90, it can be written as `[65,90]`, if there are multiple groups, the group writing syntax can be used, such as representing both uppercase and lowercase letters, it can be written as `[65-90,97-122]`. For a date, it means a date range, for example, from 2012 to 2022, it is expressed as `[2012,2022]`, `suchjs` has built-in support for a more powerful date formating similar to php's method `strtotime`, for example, 5 years before and after, can be expressed as `['-5 years','+5 years']`.
 
 - Formatting -- The formatting `data attribute` starts with: `%`, followed by a `format` string. Formatting is usually more useful for numeric types and date types. For numeric types, `suchjs` has a built-in writing format that supports a c-style method `printf`. For example, `%.2f` means to convert a number to a floating point number with 2 decimal places (the `:number` type by default generate a number that the decimal part as well as the `Math.random`).
 

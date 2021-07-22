@@ -13,7 +13,13 @@ module.exports = {
     },
   },
   themeConfig: {
-    logo: 'https://vuejs.org/images/logo.png',
+    logo: './logo.png',
+    // 文档仓库
+    docsRepo: 'suchjs/vp-suchjs',
+    lastUpdatedText: '最后更新于',
+    contributorsText: '提交者',
+    editLinkText: '编辑此页',
+    docsDir: '/',
     // 仓库
     repo: 'suchjs/such',
     repoLabel: 'Github',
@@ -65,6 +71,10 @@ module.exports = {
           '/en/field.md',
           '/en/api.md'
         ],
+        // 英文下的配置
+        lastUpdatedText: 'Last Updated',
+        contributorsText: 'Contributors',
+        editLinkText: 'Edit this page',
       },
     },
 
