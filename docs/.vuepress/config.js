@@ -41,7 +41,7 @@ module.exports = {
               '/types/number.md',
               '/types/date.md',
               '/types/regexp.md',
-              '/types/id.md',
+              '/types/increment.md',
               '/types/ref.md',
             ]
           },
@@ -64,7 +64,7 @@ module.exports = {
               '/en/types/number.md',
               '/en/types/date.md',
               '/en/types/regexp.md',
-              '/en/types/id.md',
+              '/en/types/increment.md',
               '/en/types/ref.md',
             ]
           },
