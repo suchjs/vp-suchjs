@@ -43,6 +43,8 @@ module.exports = {
               '/types/regexp.md',
               '/types/increment.md',
               '/types/ref.md',
+              '/types/dict.md',
+              '/types/cascader.md',
             ]
           },
           '/extTypes.md',
@@ -66,6 +68,8 @@ module.exports = {
               '/en/types/regexp.md',
               '/en/types/increment.md',
               '/en/types/ref.md',
+              '/en/types/dict.md',
+              '/en/types/cascader.md',
             ]
           },
           '/en/extTypes.md',
