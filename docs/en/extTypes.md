@@ -91,4 +91,14 @@ Such.as(":email"); // The output is similar to: '3yh_meqy@o6tw1.com'
 Such.as(':email:#[domain="gmail.com"]'); // The output is similar to: `7z4@gmail.com`
 ```
 
+### `:color$hex`
+
+Returns a hexadecimal color value, supports two parameter configuration, `lowercase`, how to generate the color value, when `true`, the value is lowercase, otherwise it is uppercase. `argb`, when it is `true`, returns 8-bit color value in `argb` format, otherwise, it returns 6-bit color value in `rgb` format.
+
+```javascript
+Such.as(":color$hex"); // The output is similar to: '#B22AB0'
+Such.as(':color$hex:#[lowcase=true,argb=true]'); // The output is similar to: `#92131a73`
+```
+
+
 Because Suchjs itself has good extensibility, the embedding of built-in types is mainly based on some commonly used types, and more types may continue to be added in the future. For more specific types, please use the API to configure files, with the help of `Such.config` to achieve.

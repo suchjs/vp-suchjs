@@ -11,6 +11,7 @@ description: suchjs built-in type 'date'
 - `[begin,end]` date range, used to set the begin and end time range of the date.
 
 ```javascript
+// It will return a `Date` object, if you don't use the 'formatting' 
 // Set the date and time range from 2010 to 2020
 // Pay attention to the range in symbol `,` without spaces in between
 Such.as(":date:[2010,2020]");
@@ -20,7 +21,7 @@ Such.as(":date:[2010,2020]");
 Such.as(":date:['tomorrow','+6 months']");
 ```
 
-- `%` formatting, by default, the date type is formatted as `yyyy-mm-dd`, year-month-day, but this may usually not what you want to get, so you need to set a formatting to format the date.
+- `%` formatting, by default, the `:date` type will return a `Date` object, but this may usually not what you want to get, so you need to set a formatting to get a formated date string.
 
 ```javascript
 // set the date to the range from yesterday to tomorrow,
