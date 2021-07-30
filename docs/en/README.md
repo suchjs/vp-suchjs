@@ -18,7 +18,7 @@ Each data type has its own features. For example, numbers, it have sizes and for
 
 The built-in `data attribute`s in `suchjs` include the following:
 
-- Type -- First, you need to give the type of the data. It can be a built-in type of the library, and also can be a type you defined it yourself. The library built-in types contains: a string `:string`, a number `:number`, a date `:date`, a regular expression `:regexp`, a reference `:ref`, a self-increment id `:id`. In the nodejs environment, also supports a dictionary `:dict`, a cascading menu `:cascader`, etc. In addition, it also includes built-in extension types such as `:boolean`, `:url`, `:email`, etc.
+- Type -- First, you need to give the type of the data. It can be a built-in type of the library, and also can be a type you defined it yourself. The library built-in types contains: a string `:string`, a number `:number`, a date `:date`, a regular expression `:regexp`, a reference `:ref`, a self-increment number `:increment`, and also supports a dictionary `:dict`, a cascading menu `:cascader`, but they have a slight difference in use. In addition, it also includes built-in extension types such as `:boolean`, `:url`, `:email`, etc.
 
 - Length -- The length `data attribute` use a format of `{min[,max]}`, which is usually used for the string and array data. For example, if the length of the string is 3, it can be represented by `{3}`, and the length is 10 up to 20, it can be represented by `{10,20}`
 
@@ -38,7 +38,7 @@ The built-in `data attribute`s in `suchjs` include the following:
 
 With an understanding of the basics of the above `data attribute`s, we can now mock some data through the combination of these `data attribute`s.
 
-- `:string:[65,90]:{3,10}` => output 3 to 10 uppercase letters, such as `DUFCD`, `KASGDS`
+- `:string:[65,90]:{3,10}` => output a string, and it's unicode point is between 65 to 90(that is,uppercase letters), and the length is between 3 to 10, it will get a result data such as `DUFCD`, `KASGDS`
 
 - `:date:['-1 year','+1 year']:%yyyy-mm-dd HH\:MM\:ss` => output the date one year before and after the current date and format it as `year-month-day hour:minute:second`.
 
