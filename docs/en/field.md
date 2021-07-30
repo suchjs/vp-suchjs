@@ -4,7 +4,7 @@ title: Field configure
 description: how to set the field
 ---
 
-## How to configure the fields
+## How to configure the fields <Badge text=">= 1.0.0" />
 
 Usually our actual data mocking is based on the `json` object, then we need configure the `key` of the data field. Suchjs supports the following configuration for the field key:
 
@@ -51,7 +51,7 @@ Usually our actual data mocking is based on the `json` object, then we need conf
   };
   ```
 
-## Special value generation
+## Special value generation <Badge text=">= 1.0.0" />
 
 Since the data mocking of Suchjs is described in string format, how to distinguish between normal strings and data types & attributes becomes important. The data types in Suchjs all start with `:`, If you have a normal string also starting with a colon `:`, now you need to convert `:` with escaped `\\`. The escape character will be removed from the generated string at last. Examples are as follows:
 

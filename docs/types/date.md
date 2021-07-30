@@ -4,7 +4,7 @@ title: :date
 description: suchjs内置类型date
 ---
 
-#### date 类型说明
+#### date 类型说明 <Badge text=">= 1.0.0" /> 
 
 `:date` 类型是我们经常遇到的数据类型之一，suchjs 对日期类型支持以下数据属性：
 

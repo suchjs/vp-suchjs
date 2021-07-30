@@ -4,7 +4,7 @@ title: :increment
 description: suchjs内置类型increment
 ---
 
-#### increment 类型说明
+#### increment 类型说明 <Badge text=">= 1.0.0" /> 
 
 `:increment` 类型可以用来模拟数据库的自增id等，在配置了长度个数参数属性后，也可以用来模拟一个 `range` 范围数组。
 

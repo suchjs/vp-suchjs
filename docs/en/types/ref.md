@@ -4,7 +4,7 @@ title: :ref
 description: suchjs
 ---
 
-#### `ref` type description
+#### `ref` type description <Badge text=">= 1.0.0" />
 
 `:ref` type refers to other fields, and is generally used to combine the values ​​of multiple fields.
 

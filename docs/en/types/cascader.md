@@ -4,7 +4,7 @@ title: :cascader
 description: suchjs built-in type cascader
 ---
 
-#### `:cascader` type description
+#### `:cascader` type description <Badge text=">= 1.0.0" />
 
 `:cascader` can use it to mock a multilevel linkage data, there are also some difference between Nodejs environment and browser.
 

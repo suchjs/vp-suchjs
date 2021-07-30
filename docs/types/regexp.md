@@ -4,7 +4,7 @@ title: :regexp
 description: suchjs内置类型regexp
 ---
 
-#### regexp 类型说明
+#### regexp 类型说明 <Badge text=">= 1.0.0" /> 
 
 `:regexp` 类型是 `suchjs` 内置的十分强大的类型，很多类型都可以基于该类型来扩展，但也不能过度使用它，毕竟解析正则表达式并生成字符串是个相对比较费性能的事情。
 

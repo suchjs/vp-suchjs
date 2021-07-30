@@ -4,7 +4,7 @@ title: :regexp
 description: suchjs built-in type regexp
 ---
 
-#### `regexp` type description
+#### `regexp` type description <Badge text=">= 1.0.0" />
 
 `:regexp` type is a very powerful built-in type in the library. Many types can be extended based on this type, but it should not be overused. After all, parsing regular expressions and generating strings what matched the regexp is a relatively expensive task.
 

@@ -1,3 +1,4 @@
+const { path } = require('@vuepress/utils');
 const head = [
   ['script', {
     src: 'https://cdn.jsdelivr.net/gh/suchjs/such@master/dist/such.min.js'
@@ -61,7 +62,7 @@ module.exports = {
           '/extTypes.md',
           '/field.md',
           '/api.md',
-          // '/playground.md'
+          '/playground.md'
         ],
       },
       '/en/': {
@@ -90,7 +91,7 @@ module.exports = {
           '/en/extTypes.md',
           '/en/field.md',
           '/en/api.md',
-          // '/en/playground.md'
+          '/en/playground.md'
         ],
         // 英文下的配置
         lastUpdatedText: 'Last Updated',
@@ -99,4 +100,15 @@ module.exports = {
       },
     },
   },
+  plugins: [
+    [
+      '@vuepress/register-components',
+      {
+        componentsDir: path.resolve(__dirname, './components'),
+        components: {
+          Playground: path.resolve(__dirname, './components/playground.vue')
+        }
+      },
+    ],
+  ],
 }

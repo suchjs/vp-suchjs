@@ -4,7 +4,7 @@ title: :increment
 description: suchjs built-in type increment
 ---
 
-#### `:increment` type description
+#### `:increment` type description <Badge text=">= 1.0.0" />
 
 `:increment` the type can be used to mock the auto-increment data. If the length `data attribute` is also setted, it can be used to mock a `range` array.
 

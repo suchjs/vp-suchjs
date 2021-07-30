@@ -4,7 +4,7 @@ title: :date
 description: suchjs built-in type 'date'
 ---
 
-#### `:date` type description
+#### `:date` type description <Badge text=">= 1.0.0" />
 
 `:date` type is one of the most common data types. It supports the following data attributes:
 

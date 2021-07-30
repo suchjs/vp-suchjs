@@ -4,7 +4,7 @@ title: :cascader
 description: suchjs内置类型cascader
 ---
 
-#### cascader 类型说明
+#### cascader 类型说明 <Badge text=">= 1.0.0" /> 
 
 `:cascader` 类型用来模拟一个多级联动的数据，针对 Nodejs 环境和浏览器环境，配置上有细微差别。
 

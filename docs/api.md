@@ -4,7 +4,7 @@ title: 接口API
 description: suchjs接口
 ---
 
-### `Such.define`
+### `Such.define` <Badge text=">= 1.0.0" />
 
 `Such.define` 是 Suchjs 自定义类型的入口方法，包括配置文件，都是调用该方法来增加自定义类型。它接受四种形式的参数，分别对应不同的情形。
 
@@ -132,7 +132,7 @@ description: suchjs接口
 
     `config` 参数可以参考第三种形式的说明，在该方式定义下，`reGenerate` 的数据生成函数将可以替代 `baseType` 的生成函数，这样基本完全覆写了 `baseType`，这种需求一般比较少见，但接口依然给予了可以操作的可能性。
 
-### `Such.parser`
+### `Such.parser` <Badge text=">= 1.0.0" />
 
 Suchjs 中的 `parser` 是针对的数据属性的解析，目前已有的内置 `parser` 包括：
 
@@ -251,7 +251,7 @@ Such.as(':showdata:(1, 2, "hello", 3, 4, "world")');
 // 将输出 `number:1|string:world`，`number:4|string:hello` 等等
 ```
 
-### `Such.alias`
+### `Such.alias` <Badge text=">= 1.0.0" />
 
 定义类型别名，它的调用方式比较简单，用来对一些长类型名增加简写别名。
 
@@ -262,7 +262,7 @@ Such.as(':showdata:(1, 2, "hello", 3, 4, "world")');
 Such.alias("int", "integer");
 ```
 
-### `Such.config`
+### `Such.config` <Badge text=">= 1.0.0" />
 
 有了以上的三个方法，我们就可以很方便的对整个 Suchjs 支持的类型进行扩展了，为方便快速定义这些数据，Suchjs 提供了该方法来对数据进行加载。
 
@@ -302,7 +302,7 @@ Such.config({
 });
 ```
 
-### `Such.instance`
+### `Such.instance` <Badge text=">= 1.0.0" />
 
 提供了一个直接生成 Such 模拟对象实例的静态方法，推荐使用它来创建实例，主要方便后续可能做的一些缓存优化等。
 
@@ -313,7 +313,7 @@ IDGenerator.a(); // 1
 IDGenerator.a(); // 2
 ```
 
-### `Such.assign`
+### `Such.assign` <Badge text=">= 1.0.0" />
 
 前面提到我们所有的数据模拟都支持 `@` 开头的函数调用以及 `#[key=value]` 方式的配置属性，那么如果我们想从外部注入函数调用时要用到的函数名和配置属性中的 value 值，这时候就需要用到 `Such.assign` 了。
 

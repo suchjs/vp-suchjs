@@ -4,7 +4,7 @@ title: :dict
 description: suchjs内置类型dict
 ---
 
-#### dict 类型说明
+#### dict 类型说明 <Badge text=">= 1.0.0" /> 
 
 `:dict` 用来模拟一些从数组中随机挑选一些值的类型，针对 Nodejs 环境和浏览器参数配置有所差别。
 

@@ -4,7 +4,7 @@ title: :number
 description: suchjs内置类型number
 ---
 
-#### number 类型说明
+#### number 类型说明 <Badge text=">= 1.0.0" /> 
 
 `:number` 类型是 `suchjs` 内置的另一最基本类型之一，它支持以下数据属性：
 

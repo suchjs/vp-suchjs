@@ -4,7 +4,7 @@ title: APIs
 description: APIs of suchjs
 ---
 
-### `Such.define`
+### `Such.define` <Badge text=">= 1.0.0" />
 
 `Such.define` It is the entry method to difine a custom type, including a configuration data called by API `Such.config`, are called it to add data types. It accepts four kinds of parameters, corresponding to different situations.
 
@@ -136,7 +136,7 @@ description: APIs of suchjs
 
 - The fourth: similar to the third form, but an additional inheritance type `baseType` parameter is added. This form is currently less used.
 
-### `Such.parser`
+### `Such.parser` <Badge text=">= 1.0.0" />
 
 The `parser` in Suchjs is for the analysis of `data attribute`s. The built-in `parser`s include:
 
@@ -261,7 +261,7 @@ Such.as(':showdata:(1, 2, "hello", 3, 4, "world")');
 // Will output `number:1|string:world`, `number:4|string:hello` etc.
 ```
 
-### `Such.alias`
+### `Such.alias` <Badge text=">= 1.0.0" />
 
 Define type alias, it's just need provide two arguments, one is the abbreviated alias name, the other is the actual existing long type name.
 
@@ -272,7 +272,7 @@ Define type alias, it's just need provide two arguments, one is the abbreviated 
 Such.alias("int", "integer");
 ```
 
-### `Such.config`
+### `Such.config` <Badge text=">= 1.0.0" />
 
 With the above three methods, we can easily extend the types supported by Suchjs. In order to quickly define these data all, Suchjs provides this method:
 
@@ -323,7 +323,7 @@ IDGenerator.a(); // 1
 IDGenerator.a(); // 2
 ```
 
-### `Such.assign`
+### `Such.assign` <Badge text=">= 1.0.0" />
 
 As mentioned earlier, all of our data mocking support function calls `data attribute` starting with `@` and data configuration `data attribute` like `#[key=value]`, so if you want to inject your own function call names and data configuration's value data variable, you need to use `Such.assign`.
 

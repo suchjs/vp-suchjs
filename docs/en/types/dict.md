@@ -4,7 +4,7 @@ title: :dict
 description: suchjs built-in type dict
 ---
 
-#### `:dict` type descscription
+#### `:dict` type descscription <Badge text=">= 1.0.0" />
 
 `:dict` it used to get an item from an array data, in the Nodejs environment and browser, there are some difference with where to get an array data。
 

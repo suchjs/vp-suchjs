@@ -4,7 +4,7 @@ title: :string
 description: suchjs built-in type string
 ---
 
-#### `:string` type description
+#### `:string` type description <Badge text=">= 1.0.0" />
 
 `:string` type is one of the most basic built-in types, and it supports the following data attributes:
 

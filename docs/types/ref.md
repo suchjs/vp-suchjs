@@ -4,7 +4,7 @@ title: :ref
 description: suchjs内置类型ref
 ---
 
-#### ref 类型说明
+#### ref 类型说明 <Badge text=">= 1.0.0" /> 
 
 `:ref` 类型表示引用其它字段，一般用于组合多个字段的值。
 

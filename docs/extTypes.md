@@ -4,7 +4,7 @@ title: 扩展类型
 description: suchjs内置扩展类型
 ---
 
-### `:boolean`
+### `:boolean` <Badge text=">= 1.0.0" />
 
 返回一个布尔值，true 或者 false。
 
@@ -12,7 +12,7 @@ description: suchjs内置扩展类型
 Such.as(":boolean"); // true|false
 ```
 
-### `:bool`
+### `:bool` <Badge text=">= 1.0.0" />
 
 `:bool` 类型是 `:boolean` 的简写别名。别名通过 Suchjs 提供的 api `Such.alias` 来定义，比如`Such.alias("bool", "boolean")`。
 
@@ -20,7 +20,7 @@ Such.as(":boolean"); // true|false
 Such.as(":bool"); // true|false
 ```
 
-### `:integer`
+### `:integer` <Badge text=">= 1.0.0" />
 
 返回一个整数值。
 
@@ -30,7 +30,7 @@ Such.as(":integer:[100,200]"); // 125
 
 `:integer` 类型继承自 `:number` 类型，它由 Suchjs 提供的 api `Such.define` 来定义，定义的方式形如，`Such.define("integer", "number", "%d")`，相当于在 number 类型的基础上固定了格式化属性参数。
 
-### `:int`
+### `:int` <Badge text=">= 1.0.0" />
 
 `:int` 类型是 `:integer` 的简写别名。
 
@@ -38,7 +38,7 @@ Such.as(":integer:[100,200]"); // 125
 Such.as(":int:[100,200]"); // 125
 ```
 
-### `:percent`
+### `:percent` <Badge text=">= 1.0.0" />
 
 返回一个不带小数点的百分值，它的定义方式为 `Such.define('percent', 'number', '[1,100]:%d%')`，表示数字的范围在 1 到 100，同时格式化为整数后加 `%` 符号的形式。
 
@@ -46,7 +46,7 @@ Such.as(":int:[100,200]"); // 125
 Such.as(":percent"); // '72%'
 ```
 
-### `:uppercase`
+### `:uppercase` <Badge text=">= 1.0.0" />
 
 返回一个大写字母字符串，它的定义方式为 `Such.define('uppercase', 'string', '[65,90]')`，相当于在 string 字符串类型的基础上限制了 unicode 的码点范围为 65 到 90，也即大写字母。
 
@@ -54,7 +54,7 @@ Such.as(":percent"); // '72%'
 Such.as(":uppercase"); // 'IGSDLD'
 ```
 
-### `:lowercase`
+### `:lowercase` <Badge text=">= 1.0.0" />
 
 返回一个小写字母字符串，它的定义方式为 `Such.define('lowercase', 'string', '[97,122]')`，相当于在 string 字符串类型的基础上限制了 unicode 的码点范围为 97 到 122，也即小写字母。
 
@@ -70,7 +70,7 @@ Such.as(":lowercase"); // 'augdkoa'
 Such.as(":lowercase"); // 'A9dkI_1'
 ```
 
-### `:url`
+### `:url` <Badge text=">= 1.0.0" />
 
 返回一个 url 地址，它继承自 `:regexp`，在它的基础上固定了匹配的正则表达式。
 
@@ -82,7 +82,7 @@ Such.as(":url");
 Such.as(':url:#[protocol="https",ltd="com"]');
 ```
 
-### `:email`
+### `:email` <Badge text=">= 1.0.0" />
 
 返回一个邮件地址，它同样继承自 `:regexp`。
 
@@ -91,7 +91,7 @@ Such.as(":email"); // 生成类似：'3yh_meqy@o6tw1.com'
 Such.as(':email:#[domain="gmail.com"]'); // 生成类似： `7z4@gmail.com`
 ```
 
-### `:color$hex`
+### `:color$hex` <Badge text=">= 1.0.0" />
 
 返回一个16进制的颜色值，支持两个参数配置，`lowercase`，为`true`时生成的颜色值为小写，否则为大写。`argb`，为`true`时，返回8位的`argb`格式颜色值，否则为`rgb`格式的6位颜色值。
 

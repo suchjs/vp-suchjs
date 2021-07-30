@@ -4,7 +4,7 @@ title: :string
 description: suchjs内置类型string
 ---
 
-#### string 类型说明
+#### string 类型说明 <Badge text=">= 1.0.0" /> 
 
 `:string` 类型是 `suchjs` 内置的最基本类型之一，它支持以下数据属性：
 

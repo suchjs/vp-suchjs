@@ -4,7 +4,7 @@ title: :number
 description: suchjs built-in type number
 ---
 
-#### `:number` type description
+#### `:number` type description <Badge text=">= 1.0.0" />
 
 `:number` type is another one of the most basic built-in types. It supports the following data attributes:
 
