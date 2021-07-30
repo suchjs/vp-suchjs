@@ -86,7 +86,7 @@ Such.assign('city', {
   }
 });
 // define a new type
-Such.define('mobile$china', 'regexp', '/(\\\\+86\\\\-)?(?<service>1[3-8][0-9])\\d{8}/');
+Such.define('mobile$china', 'regexp', '/(\\\\+86\\\\-)?(?<service>1[3-8][0-9])\\\\d{8}/');
 `;
 export default {
   props: {
