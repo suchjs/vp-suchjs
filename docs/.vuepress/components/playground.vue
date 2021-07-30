@@ -108,7 +108,7 @@ export default {
     city: ':cascader:&./province',
     area: ':cascader:&./city',
     ref: ':ref:&./province,./city,./area:@join("/")',
-    regexp: ':regexp:/\\$[a-z]\\w*/',
+    regexp: ':regexp:/\\\\$[a-z]\\\\w*/',
     email: ':email:#[domain="gmail.com"]',
     mobile: ':mobile$china',
     date: ':date:%yyyy-mm-dd HH\\\\:MM\\\\:ss',
@@ -117,8 +117,8 @@ export default {
     isNew: ':boolean',
   },
   'from{1}': ['Netflix', 'Disney'],
-  'notranslate': '\\:number',
-};
+  'notranslate': '\\\\:number',
+}
     `.trim();
     const i18n = {
         zh: {
@@ -157,15 +157,14 @@ export default {
       this.code = this.origCode;
     },
     runCode() {
-      const lastCode = this.code.trim();
+      let lastCode = this.code.trim();
       let context;
       // json data
-      if(lastCode.startsWith('{') && (lastCode.endsWith('}') || lastCode.replace(/\;*$/, '').endsWith('}'))){
+      if(lastCode.startsWith('{') && (lastCode.endsWith('}') || (lastCode = lastCode.replace(/;+$/, '')).endsWith('}'))){
         context = 'return Such.as(' + lastCode + ');';
       }else{
         context = lastCode.replace("console.log(", "return (");
       }
-      console.log(context);
       const result = new Function(
         "Such",
         context
