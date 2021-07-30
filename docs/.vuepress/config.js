@@ -1,16 +1,25 @@
+const head = [
+  ['script', {
+    src: 'https://cdn.jsdelivr.net/gh/suchjs/such@master/dist/such.min.js'
+  }]
+];
 module.exports = {
   base: '/vp-suchjs/',
   lang: 'zh-CN',
   title: 'Suchjs文档',
-  description: 'Suchjs目标是成为一个易扩展、声明式的强大mock库，基于typescript编写',
+  description: 'Suchjs目标是成为一个易扩展、声明式的强大数据模拟库',
   locales: {
     '/': {
       lang: 'zh-CN',
+      // 头部
+      head,
     },
     '/en/': {
       lang: 'en-US',
       title: 'Suchjs document',
-      description: 'Suchjs aim to be an extendedale, declaretive mocking library, written in typescript'
+      description: 'Suchjs aim to be an extendedale, declaretive mocking library, written in typescript',
+      // 头部
+      head,
     },
   },
   themeConfig: {
@@ -29,6 +38,8 @@ module.exports = {
       '/': {
         selectLanguageName: '简体中文',
         selectLanguageText: '选择语言',
+        // 头部
+        head,
         // 侧边栏
         sidebar: [
           '/',
@@ -49,12 +60,16 @@ module.exports = {
           },
           '/extTypes.md',
           '/field.md',
-          '/api.md'
+          '/api.md',
+          // '/playground.md'
         ],
       },
       '/en/': {
+        // 语言配置
         selectLanguageName: 'English',
         selectLanguageText: 'Language',
+
+        // 侧边栏
         sidebar: [
           '/en/',
           '/en/installation.md',
@@ -74,7 +89,8 @@ module.exports = {
           },
           '/en/extTypes.md',
           '/en/field.md',
-          '/en/api.md'
+          '/en/api.md',
+          // '/en/playground.md'
         ],
         // 英文下的配置
         lastUpdatedText: 'Last Updated',
@@ -82,14 +98,5 @@ module.exports = {
         editLinkText: 'Edit this page',
       },
     },
-
-    head: [
-      ['script', {
-        src: 'https://cdn.jsdelivr.net/gh/suchjs/such@master/dist/such.min.js'
-      }]
-    ],
-    // 插件
-    plugins: [
-    ]
   },
 }
