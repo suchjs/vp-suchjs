@@ -97,33 +97,28 @@ export default {
   },
   data() {
     const origCode = `
-// create an instance
-const instance = Such.instance({
-      errno: ':int:[0,1]',
-      errmsg: ':string{0,20}:@concat("_ok")',
-      'count?': ':number[1e5,1e6]:%d',
-      'list{2,5}': {
-        id: ':increment',
-        range: ':increment:#[start=0]:{3}',
-        province: ':cascader:#[root=true,data=city]',
-        city: ':cascader:&./province',
-        area: ':cascader:&./city',
-        ref: ':ref:&./province,./city,./area:@join("/")',
-        regexp: ':regexp:/\\$[a-z]\\w*/',
-        email: ':email:#[domain="gmail.com"]',
-        mobile: ':mobile$china',
-        date: ':date:%yyyy-mm-dd HH\\\\:MM\\\\:ss',
-        price: ':number[100,200]:%.2f',
-        color: ':color$rgba',
-        isNew: ':boolean',
-      },
-      'from{1}': ['Netflix', 'Disney'],
-      'notranslate': '\\:number',
-    });
-// generate a fake data
-const value = instance.a();
-// show the data
-console.log(value);
+{
+  errno: ':int:[0,1]',
+  errmsg: ':string{0,20}:@concat("_ok")',
+  'count?': ':number[1e5,1e6]:%d',
+  'list{2,5}': {
+    id: ':increment',
+    range: ':increment:#[start=0]:{3}',
+    province: ':cascader:#[root=true,data=city]',
+    city: ':cascader:&./province',
+    area: ':cascader:&./city',
+    ref: ':ref:&./province,./city,./area:@join("/")',
+    regexp: ':regexp:/\\$[a-z]\\w*/',
+    email: ':email:#[domain="gmail.com"]',
+    mobile: ':mobile$china',
+    date: ':date:%yyyy-mm-dd HH\\\\:MM\\\\:ss',
+    price: ':number[100,200]:%.2f',
+    color: ':color$rgba',
+    isNew: ':boolean',
+  },
+  'from{1}': ['Netflix', 'Disney'],
+  'notranslate': '\\:number',
+};
     `.trim();
     const i18n = {
         zh: {
