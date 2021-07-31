@@ -87,6 +87,7 @@ module.exports = {
               '/en/types/ref.md',
               '/en/types/dict.md',
               '/en/types/cascader.md',
+              '/en/types/template.md'
             ]
           },
           '/en/extTypes.md',
