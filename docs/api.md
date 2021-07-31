@@ -332,6 +332,20 @@ Such.as(":string:{20}:@truncate(10)");
 // 输出类似：'tALIHe(|ff...'
 ```
 
+### `Such.template` <Badge text=">= 1.1.0" />
+
+该方法也是[`模板字符串类型`](./types/template.md)实际调用的方法，不同的是它不需要前导的三冒号 `:::` 作为类型标识。它接受一个字符串模板，如果是数据类型变量，可以用（backtick => "\`"） 符号进行包裹。如果后面还有其它的模板字符串类型参数，仍然使用三冒号 `:::` 标识模板字符串已经书写结束，后面的字符串将作为类型的 `data attributes` 进行解析。目前版本支持的 `data attributes` 只包括 `{3}` 这样的长度属性，表示对前面的模板字符串进行多少次重复。如果需要输出正常的 backtick \` 符号，或者正常的三冒号，请在前面加上反斜杠 `\\` 进行转义。
+
+`Such.template(key: string, path?: TFieldPath)`
+
+```javascript
+// 单独调用时，不需要提供第二个类xpath路径的path参数
+// 该参数主要在使用模板字符串类型时提供，方便对错误进行更好提示
+Such.assign('dict', ['bear', 'rabbit']);
+Such.template("i spent `:number:[50,100]` dollars to buy a `:dict:#[data=dict]` toy.");
+Such.template("`:uppercase:{3}`:::{3}"); // 输出 "ACDACDACD"
+```
+
 以上基本就是 Suchjs 提供的主要 API 了，其它的 API 可能会随着版本的更迭进行增改。如果有好的意见，欢迎在 github 里提供反馈。
 
 Nodejs 环境下还有些基于数据缓存、加载与更新的一些 API，将会有单独的章节来说明。

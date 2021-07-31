@@ -342,6 +342,20 @@ Such.as(":string:{20}:@truncate(10)");
 // Output is similar to：'tALIHe(|ff...'
 ```
 
+### `Such.template` <Badge text=">= 1.1.0" />
+
+This method is also the method actually called by the [template literal type](./types/template.md). The difference is that it does not require the leading three colons `:::` as the type identifier. It accepts a string template, if it is a data type variable, it can be wrapped with the (backtick => "\`") symbol. If there are other data attribute parameters, the three colons `:::` are still used to indicate that the template literal is end, and the following string will be parsed as the type of `data attribute`s. The `data attribute`s supported by the current version only includes length `data attribute` like `{3}`, indicating how many times the previous template string is repeated. If you need to output the normal backtick \` symbol, or the three colons `:::`, please add a backslash `\\` in front of it to escape.
+
+`Such.template(key: string, path?: TFieldPath)`
+
+```javascript
+// When only call itself, no need to provide the path parameter like a xpath of data
+// The path parameter is mainly provided when using the template string type to facilitate better prompts for errors
+Such.assign('dict', ['bear', 'rabbit']);
+Such.template("i spent `:number:[50,100]` dollars to buy a `:dict:#[data=dict]` toy.");
+Such.template("`:uppercase:{3}`:::{3}"); // Output: "ACDACDACD"
+```
+
 The above is basically the main APIs provided by `Suchjs`, and other APIs may be added and changed as the library's version changes. If you have any good comments, please feel free to provide feedback `in github`.
 
 There are also some APIs based on data caching, loading and updating in the Nodejs environment, which will be explained in a separate chapter.
