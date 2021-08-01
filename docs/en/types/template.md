@@ -24,3 +24,20 @@ Such.as(":::\\`\\:::"); // Output: "`:::"
 // repeat between 3 to 5 times
 Such.as(":::it's a string-`:string`;it's a number-`:number`;:::{3,5}");
 ```
+
+
+- Note: The template literal type was added in the `v1.1.0` version. This version does not support the `:ref` reference data type, but it has been repaired and supplemented in `v1.1.1`. Now, you can use a normal data path to reference data like before, and a special path like `/${0}`, `/${1}` is added to support to reference the data type used in template literal itself by index.
+
+```javascript
+Such.as({
+  hello: 'hello',
+  world: 'world',
+  say: ':::`:ref:&./hello`,`:ref:&./world`!`:ref:&/${0}`,`:ref:&/${1}`!'
+});
+// will output
+{
+  hello: 'hello',
+  world: 'world',
+  say: 'hello,world!hello,world!'
+}
+```
