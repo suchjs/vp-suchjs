@@ -296,9 +296,22 @@ Such.config({
     int: "integer",
     bool: "boolean",
   },
-  // extends: ['such:recommend'],
-  // 如果在nodejs环境中，还会支持extends扩展的配置
-  // 对应的是一个配置文件模块
+  // 以下配置仅在Node环境下使用
+  // 对应的是一个与当前配置文件格式一致的导出文件
+  // 格式可以是json，也可以是CMD模块，以'such:'开头的是内置模块
+  extends: ['such:recommend'],
+  // 文件路径、预加载配置
+  config: {
+    // 是否预加载所有数据文件，这里主要针对词典类型和级联类型
+    // 可以是布尔型，true表示预加载所有文件
+    // 也可以是个数组，指定要预加载的数据文件
+    preload: false, 
+    // 在node环境下，Such.as('*.json') 会直接从该目录下获取json文件
+    // 以该json文件为配置生成模拟数据
+    suchDir: 'suchas', 
+    // 存放数据文件的路径
+    dataDir: 'suchas/data', 
+  },
 });
 ```
 

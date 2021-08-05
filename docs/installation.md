@@ -17,7 +17,7 @@ yarn add suchjs
 pnpm add suchjs
 ```
 
-在 nodejs 环境下，suchjs 具备加载配置文件的能力，配置文件的格式可以查看 [配置文件](./config.md)
+在 nodejs 环境下，suchjs 具备加载配置文件的能力，配置文件的格式可以查看API [Such.config](./api.html#such-config)
 
 ## Browser
 

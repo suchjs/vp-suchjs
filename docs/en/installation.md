@@ -17,7 +17,7 @@ yarn add suchjs
 pnpm add suchjs
 ```
 
-In the nodejs environment, suchjs has the ability to load configuration files, the format of the configuration file can be viewed [Configuration File](./config.md)
+In the nodejs environment, suchjs has the ability to load configuration files, the format of the configuration file can be viewed in API [Such.config](./api.html#such-config)
 
 ## Browser
 

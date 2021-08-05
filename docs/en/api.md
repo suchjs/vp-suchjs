@@ -306,9 +306,24 @@ Such.config({
     int: "integer",
     bool: "boolean",
   },
-  // extends: ['such:recommend'],
-  // If in the nodejs environment, the configuration of extends extension will also be supported
-  // Corresponds to a configuration file module
+  // The following configuration is only used in the Node environment
+  // 'extends' it's an array list of config file should loaded first.
+  // The config file use the same format as the current config parameter
+  // It can be a json file or a CMD module 
+  // The ones beginning with 'such:' are built-in config modules
+  extends: ['such:recommend'],
+  // The file paths & preload configuration
+  config: {
+    // Whether to preload all data files, this is mainly for ':dict' data type and ':cascade' data type
+    // Can be boolean, true means preload all files
+    // It can also be an array, specifying the data file need to be preloaded
+    preload: false,
+    // In the node environment, Such.as('*.json') will get the json file directly from this directory
+    // Generate simulation data with the json file as the data configuration
+    suchDir:'suchas',
+    // The path to store the data file
+    dataDir:'suchas/data',
+  },
 });
 ```
 
