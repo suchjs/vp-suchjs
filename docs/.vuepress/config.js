@@ -27,6 +27,7 @@ module.exports = {
     logo: './logo.png',
     // 文档仓库
     docsRepo: 'suchjs/vp-suchjs',
+    lastUpdated: false,
     lastUpdatedText: '最后更新于',
     contributorsText: '提交者',
     editLinkText: '编辑此页',
@@ -70,7 +71,6 @@ module.exports = {
         // 语言配置
         selectLanguageName: 'English',
         selectLanguageText: 'Language',
-
         // 侧边栏
         sidebar: [
           '/en/',
@@ -96,6 +96,7 @@ module.exports = {
           '/en/playground.md'
         ],
         // 英文下的配置
+        lastUpdated: false,
         lastUpdatedText: 'Last Updated',
         contributorsText: 'Contributors',
         editLinkText: 'Edit this page',
