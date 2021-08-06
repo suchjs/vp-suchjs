@@ -309,9 +309,9 @@ Such.config({
   // The following configuration is only used in the Node environment
   // 'extends' it's an array list of config file should loaded first.
   // The config file use the same format as the current config parameter
-  // It can be a json file or a CMD module 
+  // It can be a json file or a CMD module
   // The ones beginning with 'such:' are built-in config modules
-  extends: ['such:recommend'],
+  extends: ["such:recommend"],
   // The file paths & preload configuration
   config: {
     // Whether to preload all data files, this is mainly for ':dict' data type and ':cascade' data type
@@ -320,9 +320,9 @@ Such.config({
     preload: false,
     // In the node environment, Such.as('*.json') will get the json file directly from this directory
     // Generate simulation data with the json file as the data configuration
-    suchDir:'suchas',
+    suchDir: "suchas",
     // The path to store the data file
-    dataDir:'suchas/data',
+    dataDir: "suchas/data",
   },
 });
 ```
@@ -366,9 +366,15 @@ This method is also the method actually called by the [template literal type](./
 ```javascript
 // When only call itself, no need to provide the path parameter like a xpath of data
 // The path parameter is mainly provided when using the template string type to facilitate better prompts for errors
-Such.assign('dict', ['bear', 'rabbit']);
-Such.template("i spent `:number:[50,100]` dollars to buy a `:dict:#[data=dict]` toy.");
-Such.template("`:uppercase:{3}`:::{3}"); // Output: "ACDACDACD"
+Such.assign("dict", ["bear", "rabbit"]);
+// return a Template object
+const tmpl = Such.template(
+  "i spent `:number:[50,100]` dollars to buy a `:dict:#[data=dict]` toy."
+);
+// like the `Such` instance, it has a `a()` method to generate a value base on the template instance
+tmpl.a();
+const ucaseTmpl = Such.template("`:uppercase:{3}`:::{3}");
+ucaseTmpl.a(); // Output similar to: "ACDACDACD"
 ```
 
 The above is basically the main APIs provided by `Suchjs`, and other APIs may be added and changed as the library's version changes. If you have any good comments, please feel free to provide feedback `in github`.
