@@ -8,15 +8,27 @@
 .pg-wrap .pg-output-wrap {
   width: 45%;
 }
-.pg-wrap textarea {
+.pg-wrap textarea,
+.pg-output-wrap {
   border: 1px solid #ccc;
   background: none;
   padding: 5px 10px;
   border-radius: 5px;
   width: 100%;
+  height: 610px;
   box-sizing: border-box;
   outline: none;
+  overflow-x:hidden;
+  overflow-y: auto;
   font-family: 'Courier New', Courier, monospace;
+}
+.pg-wrap .pg-output-wrap{
+  overflow-x: auto;
+}
+.pg-wrap textarea{
+  line-height: 2;
+  word-break: break-all;
+  font-size: 16px;
 }
 .pg-wrap textarea::placeholder{
   color:#ccc;
@@ -59,15 +71,7 @@
       <button class="btn btn-clear" @click="clearCode">{{texts.btnTexts.clear}}</button>
       <button class="btn btn-revert" @click="revCode">{{texts.btnTexts.revert}}</button>
     </div>
-    <div class="pg-output-wrap">
-      <textarea
-        readonly
-        class="pg-output"
-        rows="40"
-        :placeholder="texts.outputPlacehoder"
-        v-model="result"
-      ></textarea>
-    </div>
+    <div class="pg-output-wrap"></div>
   </div>
 </template>
 
@@ -96,30 +100,32 @@ export default {
     }
   },
   data() {
-    const origCode = `
-{
-  errno: ':int:[0,1]',
-  errmsg: ':string{0,20}:@concat("_ok")',
-  'count?': ':number[1e5,1e6]:%d',
-  'list{2,5}': {
-    id: ':increment',
-    range: ':increment:#[start=0]:{3}',
-    province: ':cascader:#[root=true,data=city]',
-    city: ':cascader:&./province',
-    area: ':cascader:&./city',
-    ref: ':ref:&./province,./city,./area:@join("/")',
-    regexp: ':regexp:/\\\\$[a-z]\\\\w*/',
-    email: ':email:#[domain="gmail.com"]',
-    mobile: ':mobile$china',
-    date: ':date:%yyyy-mm-dd HH\\\\:MM\\\\:ss',
-    price: ':number[100,200]:%.2f',
-    color: ':color$rgba',
-    isNew: ':boolean',
-  },
-  'from{1}': ['Netflix', 'Disney'],
-  'notranslate': '\\\\:number',
-}
-    `.trim();
+    const origJson = {
+      errno: ':int:[0,1]',
+      errmsg: ':string{0,20}:@concat("_ok")',
+      'count?': ':number[1e5,1e6]:%d',
+      'list:{1,3}': {
+        id: ':increment',
+        range: ':increment:#[start=0]:{3}',
+        address: {
+          province: ':cascader:#[root=true,data=city]',
+          city: ':cascader:&./province',
+          area: ':cascader:&./city',
+          fullWithRef: ':ref:&./province,./city,./area:@join("/")',
+          fullWithTmpl: ':::`:ref:&./province`,`:ref:&./city`,`:ref:&./area`'
+        },        
+        regexp: ':regexp:/\\$[a-z]\\w*/',
+        email: ':email:#[domain="gmail.com"]',
+        mobile: ':mobile$china',
+        date: ':date:%yyyy-mm-dd HH\\:MM\\:ss',
+        price: ':number[100,200]:%.2f',
+        color: ':color$rgba',
+        isNew: ':boolean',
+      },
+      'from{1}': ['Netflix', 'Disney'],
+      'notranslate': '\\:number',
+    };
+    const origCode = JSON.stringify(origJson, null, 4);
     const i18n = {
         zh: {
           inputPlaceholder: '页面默认已经运行以下代码',
@@ -143,15 +149,17 @@ export default {
     return {
       code: origCode,
       origCode,
+      origJson,
       defRunCode,
       result: '',
-      texts: i18n[this.lang]
+      texts: i18n[this.lang],
+      JSONFormatter: null
     };
   },
   methods: {
     clearCode() {
       this.code = '';
-      this.result = '';
+      document.querySelector('.pg-output-wrap').innerHTML = '';
     },
     revCode(){
       this.code = this.origCode;
@@ -169,10 +177,17 @@ export default {
         "Such",
         context
       )(Such);
-      this.result = JSON.stringify(result, null, 2);
-    },
+      console.log('result', result);
+      const { JSONFormatter } = this;
+      const domOutputWrap = document.querySelector('.pg-output-wrap');
+      domOutputWrap.innerHTML = '';
+      domOutputWrap.appendChild(new JSONFormatter(result, 3).render());
+    }
   },
   mounted() {
+    import('json-formatter-js').then((module) => {
+      this.JSONFormatter = module.default;
+    });
     (new Function('Such', defRunCode)(Such));
   },
 };

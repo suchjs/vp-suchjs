@@ -2192,6 +2192,11 @@ js-yaml@^3.13.1:
     argparse "^1.0.7"
     esprima "^4.0.0"
 
+json-formatter-js@^2.3.4:
+  version "2.3.4"
+  resolved "https://registry.yarnpkg.com/json-formatter-js/-/json-formatter-js-2.3.4.tgz#0b49b6facd0d54cb220eb65988157c0977a85c6f"
+  integrity sha512-gmAzYRtPRmYzeAT4T7+t3NhTF89JOAIioCVDddl9YDb3ls3kWcskirafw/MZGJaRhEU6fRimGJHl7CC7gaAI2Q==
+
 json-parse-better-errors@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/json-parse-better-errors/-/json-parse-better-errors-1.0.2.tgz#bb867cfb3450e69107c131d1c514bab3dc8bcaa9"
@@ -3491,7 +3496,7 @@ vue@^3.1.5:
     "@vue/runtime-dom" "3.1.5"
     "@vue/shared" "3.1.5"
 
-vuepress@2.0.0-beta.23:
+vuepress@^2.0.0-beta.23:
   version "2.0.0-beta.23"
   resolved "https://registry.yarnpkg.com/vuepress/-/vuepress-2.0.0-beta.23.tgz#cfdd03f50b2c8610847a7f3f39c2adad4ed7cb21"
   integrity sha512-YuPW4NtQMVntZCJYrYW8eiu7mM9n4S6K0S88ry5oxG0ZnAjlwGKm6o2XFc57pmbMtByd6ObbEEGx8i4YkANuOQ==
