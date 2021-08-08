@@ -64,6 +64,7 @@ module.exports = {
           '/extTypes.md',
           '/field.md',
           '/api.md',
+          '/mock.md',
           '/playground.md'
         ],
       },
@@ -93,6 +94,7 @@ module.exports = {
           '/en/extTypes.md',
           '/en/field.md',
           '/en/api.md',
+          '/en/mock.md',
           '/en/playground.md'
         ],
         // 英文下的配置

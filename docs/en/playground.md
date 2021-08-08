@@ -1,5 +1,5 @@
 ---
-lang: zh-CN
+lang: en-US
 title: Run Code
 description: suchjs online test
 ---

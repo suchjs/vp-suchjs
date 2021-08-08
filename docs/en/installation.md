@@ -1,5 +1,5 @@
 ---
-lang: zh-CN
+lang: en-US
 title: Installation
 description: how to install suchjs
 ---

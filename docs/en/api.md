@@ -1,5 +1,5 @@
 ---
-lang: zh-CN
+lang: en-US
 title: APIs
 description: APIs of suchjs
 ---

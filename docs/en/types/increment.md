@@ -1,5 +1,5 @@
 ---
-lang: zh-CN
+lang: en-US
 title: :increment
 description: suchjs built-in type increment
 ---

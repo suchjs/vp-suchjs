@@ -1,5 +1,5 @@
 ---
-lang: zh-CN
+lang: en-US
 title: Field configure
 description: how to set the field
 ---

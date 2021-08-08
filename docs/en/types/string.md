@@ -1,5 +1,5 @@
 ---
-lang: zh-CN
+lang: en-US
 title: :string
 description: suchjs built-in type string
 ---

@@ -1,5 +1,5 @@
 ---
-lang: zh-CN
+lang: en-US
 title: :dict
 description: suchjs built-in type dict
 ---

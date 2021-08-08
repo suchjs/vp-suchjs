@@ -1,5 +1,5 @@
 ---
-lang: zh-CN
+lang: en-US
 title: Extend types
 description: suchjs built-in extend type
 ---

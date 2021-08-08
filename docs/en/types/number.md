@@ -1,5 +1,5 @@
 ---
-lang: zh-CN
+lang: en-US
 title: :number
 description: suchjs built-in type number
 ---
