@@ -2,6 +2,10 @@ const { path } = require('@vuepress/utils');
 const head = [
   ['script', {
     src: 'https://cdn.jsdelivr.net/gh/suchjs/such@master/dist/such.min.js'
+  }],
+  ['link', {
+    rel: 'icon',
+    href: './favicon.ico'
   }]
 ];
 module.exports = {
@@ -67,6 +71,11 @@ module.exports = {
           '/mock.md',
           '/playground.md'
         ],
+        // 顶部导航
+        navbar: [{
+          text: '官网',
+          link: 'https://www.suchjs.com?locale=zh-CN'
+        }]
       },
       '/en/': {
         // 语言配置
@@ -97,6 +106,11 @@ module.exports = {
           '/en/mock.md',
           '/en/playground.md'
         ],
+        // navbar
+        navbar: [{
+          text: 'Official Site',
+          link: 'https://www.suchjs.com?locale=en-US'
+        }],
         // 英文下的配置
         lastUpdated: false,
         lastUpdatedText: 'Last Updated',

@@ -4,7 +4,7 @@ node_modules
 # temp files
 .temp
 .cache
-
+.DS_Store
 # yarn 
 yarn-error.log
 package-lock.json
