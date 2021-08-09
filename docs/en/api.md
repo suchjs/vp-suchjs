@@ -52,7 +52,7 @@ description: APIs of suchjs
 
     - `datas` The entire mocking data that has been generated when the `mocker` runs to the current field, the data is gradually generated in a depth-first manner.
 
-    - `mocker` The mocker object instance used by the current field, which has a `parent` mocker object and a `root` mocker object, organized in a tree-like structure. At the same time, there is a `storeData` field on the object, which can be used to store some data that needs to be saved on the `mocker` object. For example, the `:id` type will save the id value generated last time, so that the data value can be maintained during the next generation, keep the data in updated.
+    - `mocker` The mocker object instance used by the current field, which has a `parent` mocker object and a `root` mocker object, organized in a tree-like structure. At the same time, there is a `storeData` field on the object, which can be used to store some data that needs to be saved on the `mocker` object. For example, the `:increment` type will save the id value generated last time, so that the data value can be maintained during the next generation, keep the data in updated.
 
     - `dpath` The current path value of the data field to be generated, similar to xml's `xpath`.
 
@@ -152,7 +152,7 @@ The `parser` in Suchjs is for the analysis of `data attribute`s. The built-in `p
 
 - `@` is used to parse function calls, and multiple functions separate by the vertical bar `|` as a pipe, such as `@repeat(3)|join('')`
 
-- `#[key=value]` is used to parse the configuration, also can use a comma `,` to separate multiple key-value pairs, such as a `:id` type can set a configuration like `#[start=0,step=2]`
+- `#[key=value]` is used to parse the configuration, also can use a comma `,` to separate multiple key-value pairs, such as a `:increment` type can set a configuration like `#[start=0,step=2]`
 
 For general data types, these basic `data attribute`s are sufficient, but if you meet some needs can't cover them by those, you may need to add a new `data attribute` parser through the API `Such.parser`.
 
@@ -327,17 +327,6 @@ Such.config({
 });
 ```
 
-### `Such.instance`
-
-It's a static method to directly generate a `Such` object instance instead of `new Such`, it is recommended, mainly to facilitate some cache optimizations that may be done later.
-
-```javascript
-const IDGenerator = Such.instance(":id");
-// Generate a simulation data
-IDGenerator.a(); // 1
-IDGenerator.a(); // 2
-```
-
 ### `Such.assign` <Badge text=">= 1.0.0" />
 
 As mentioned earlier, all of our data mocking support function calls `data attribute` starting with `@` and data configuration `data attribute` like `#[key=value]`, so if you want to inject your own function call names and data configuration's value data variable, you need to use `Such.assign`.
@@ -356,6 +345,93 @@ Such.assign("truncate", function (str, len) {
 Such.as(":string:{20}:@truncate(10)");
 // Output is similar to：'tALIHe(|ff...'
 ```
+
+### `Such.instance` <Badge text=">= 1.0.0" />
+
+It's a static method to directly generate a `Such` object instance instead of `new Such`, it is recommended. If your data needs to be generated multiple times, you need use it to create an instance; the static method `Such.as(target, options?)` is a syntactic sugar method just like this: `Such.instance(target, options?).a()`.
+
+```javascript
+const IDGenerator = Such.instance(":increment");
+// Generate a simulation data
+IDGenerator.a(); // 1
+IDGenerator.a(); // 2
+```
+
+Since the version `v1.2.0`, the optional parameter of `instanceOptions` is supported when calling the `a(instanceOptions?: IAInstanceOptions)` method. This parameter currently supports the configuration of the `keys` field, it's an object use the path of the data as the `key`, use an object `{min?: number, max?: number}` as the `value`.It's used to set different configurations for each simulation data. At present, it mainly focuses on optional fields and array fields.
+
+```typescript
+// the declaration of the type IAInstanceOptions
+type IAInstanceOptions = {
+  keys?: {
+    [key: string]: {
+      min?: number;
+      max?: number;
+    };
+  };
+};
+// The `key` is a path of the data, specify the number of occurrences of the field which the path pointed to.
+```
+
+```javascript
+// Example of configuring optional fields
+const genOptional = Such.instance({
+  "optional?": ":boolean",
+});
+// Without parameters, the `optional` field above may or may not exist
+genOptional.a();
+// Add `instanceOptions` parameter
+// The `optional` field of the following calls will never exist
+genOptional.a({
+  keys: {
+    "/optional": {
+      // `max` is 0, which means that the number of occurrences of the `optional` field can only be 0
+      max: 0,
+    },
+  },
+});
+// The `optional` field of the following calls will always exist
+genOptional.a({
+  keys: {
+    "/optional": {
+      // `min` is 1, indicating that the number of occurrences of the optional field can only be 1
+      min: 1,
+    },
+  },
+});
+```
+
+```javascript
+// Example of configuration array field
+const genArray = Such.instance({
+  "array{5,10}": ":number",
+});
+// Without parameters, so the length of the array is 5 to 10
+genArray.a();
+// Add `instanceOptions` parameter
+// The following parameters will limit the length of the array to 6 to 8
+// Note that the range of this parameter can only be narrowed within the original range, not widened
+genOptional.a({
+  keys: {
+    "/array": {
+      min: 6,
+      max: 8,
+    },
+  },
+});
+// The following call will determine the length of the array to 6
+genOptional.a({
+  keys: {
+    "/array": {
+      min: 6,
+      max: 6,
+    },
+  },
+});
+```
+
+### `Such.as` <Badge text=">= 1.0.0" />
+
+As mentioned in the above `Such.instance` static method, this method provides a quick method entry that only requires generate a simulation data once.
 
 ### `Such.template` <Badge text=">= 1.1.0" />
 

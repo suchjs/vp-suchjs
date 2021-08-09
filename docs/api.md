@@ -47,7 +47,7 @@ description: suchjs接口
   - `init(utils: typeof Such.utils)` 可选，初始化时要执行的方法，主要针对参数的解析和参数数据的格式化，为了保证 this 的指向，请勿使用箭头函数，参数 `utils` 指向 Such.utils。
   - `genreate(options?: TSuchInject, such?: Such)` 必选，生成模拟数据最终要执行的方法，该方法接受一个 options 参数及 Such 类注入，其中 options `TSuchInject` 定义包含了以下参数：
     - `datas` 运行到当前模拟字段时已经生成的整个模拟数据，数据以深度优先的方式逐步生成。
-    - `mocker` 当前数据使用的 mocker 对象实例，其上有 `parent` 父 mocker 对象，`root`根 mocker 对象，整个以树状的形式组织。同时对象上有 `storeData` 字段，可以用来存储 `mocker` 对象上需要保存的一些数据，比如 `:id` 类型就会保存上次生成的 id 值，方便下次生成时能保持数据值的更新。
+    - `mocker` 当前数据使用的 mocker 对象实例，其上有 `parent` 父 mocker 对象，`root`根 mocker 对象，整个以树状的形式组织。同时对象上有 `storeData` 字段，可以用来存储 `mocker` 对象上需要保存的一些数据，比如 `:increment` 类型就会保存上次生成的 id 值，方便下次生成时能保持数据值的更新。
     - `dpath` 当前要生成的数据字段的路径值，类似于 `xpath` 的形式。
   - `reGenerate` 可选，该种形式中会忽略该参数，第四种形式的定义方式可以用来覆盖原类型的 `generate` 方法。
   - `configOptions` 可选，对应 `#[]` 的配置属性，可以用来设置某些参数的默认值和数据类型，与 `vue` 声明接受的属性参数时类似。
@@ -142,7 +142,7 @@ Suchjs 中的 `parser` 是针对的数据属性的解析，目前已有的内置
 - `/` 用来解析正则路径，后接 `pattern`，如正则的 `/\w/`
 - `&` 用来传递路径，间隔符为英文逗号 `,`，如 `:ref` 类型的 `&./firstName,./lastName`，，或者词典类型的数据地址 `&<dataDir>/dict.txt`
 - `@` 用来解析函数调用，间隔符为竖线 `|`，如 `@repeat(3)|join('')`
-- `#[key=value]` 用来解析参数配置，间隔符为英文逗号 `,`，如 `:id` 类型设置 `#[start=0,step=2]`
+- `#[key=value]` 用来解析参数配置，间隔符为英文逗号 `,`，如 `:increment` 类型设置 `#[start=0,step=2]`
 
 一般数据类型，这些基本的数据属性已经够用，但如果这些属性配置还不能满足你的需求，你就可以通过 `Such.parser` 新增一种数据属性。
 
@@ -315,17 +315,6 @@ Such.config({
 });
 ```
 
-### `Such.instance` <Badge text=">= 1.0.0" />
-
-提供了一个直接生成 Such 模拟对象实例的静态方法，推荐使用它来创建实例，主要方便后续可能做的一些缓存优化等。
-
-```javascript
-const IDGenerator = Such.instance(":id");
-// 生成一个模拟数据
-IDGenerator.a(); // 1
-IDGenerator.a(); // 2
-```
-
 ### `Such.assign` <Badge text=">= 1.0.0" />
 
 前面提到我们所有的数据模拟都支持 `@` 开头的函数调用以及 `#[key=value]` 方式的配置属性，那么如果我们想从外部注入函数调用时要用到的函数名和配置属性中的 value 值，这时候就需要用到 `Such.assign` 了。
@@ -344,6 +333,94 @@ Such.assign("truncate", function (str, len) {
 Such.as(":string:{20}:@truncate(10)");
 // 输出类似：'tALIHe(|ff...'
 ```
+
+### `Such.instance` <Badge text=">= 1.0.0" />
+
+提供了一个直接生成 Such 模拟对象实例的静态方法，如果你的数据需要多次生成，这样可以使用它来创建一个实例；静态方法 `Such.as(target, options?)` 其实就是使用该方法创建的一个语法糖，`Such.instance(target, options?).a()`。
+
+```javascript
+const IDGenerator = Such.instance(":increment");
+// 实例上有 `a()` 方法
+// 生成一个模拟数据
+IDGenerator.a(); // 1
+IDGenerator.a(); // 2
+```
+
+从 `v1.2.0` 版本后开始增加了调用 `a(instanceOptions?: IAInstanceOptions)` 方法时支持 `instanceOptions` 的可选参数，该参数目前支持 `keys` 字段的配置，通过数据的 path 路径作为 `key`，以 `{min?: number, max?: number}` 的值作为 `value`，用来精确每一次模拟数据使用不同的配置。目前它主要针对的是可选字段、以及数组字段。
+
+```typescript
+// 该参数的格式为
+type IAInstanceOptions = {
+  keys?: {
+    [key: string]: {
+      min?: number;
+      max?: number;
+    };
+  };
+};
+// 对应的 `key` 为 path 路径，指定该路径对应的字段的出现次数
+```
+
+```javascript
+// 配置可选字段示例
+const genOptional = Such.instance({
+  "optional?": ":boolean",
+});
+// 直接调用不带参数，这里上面的optional字段可能存在也可能不存在
+genOptional.a();
+// 增加instanceOptions参数
+// 以下调用 optional 字段一直不会存在
+genOptional.a({
+  keys: {
+    "/optional": {
+      // max 为 0，表示 optional 字段出现次数只能为0
+      max: 0,
+    },
+  },
+});
+// 以下调用 optional 字段将一直存在
+genOptional.a({
+  keys: {
+    "/optional": {
+      // min 为 1，表示 optional 字段出现次数只能为1
+      min: 1,
+    },
+  },
+});
+```
+
+```javascript
+// 配置数组字段示例
+const genArray = Such.instance({
+  "array{5,10}": ":number",
+});
+// 直接调用不带参数，这样数组的长度为 5 到 10
+genArray.a();
+// 增加instanceOptions参数
+// 下面的参数将把 array 数组的长度限制在 6 到 8
+// 注意该参数的范围只能在原始范围内收窄，而不能拓宽
+genOptional.a({
+  keys: {
+    "/array": {
+      min: 6,
+      max: 8,
+    },
+  },
+});
+// 以下调用将把 array 数组的长度确定为 6 条
+genOptional.a({
+  keys: {
+    "/array": {
+      min: 6,
+      max: 6,
+    },
+  },
+});
+```
+
+### `Such.as` <Badge text=">= 1.0.0" />
+
+如上 `Such.instance` 静态方法所说，该方法提供了仅需要一次调用生成一次模拟数据的快速方法入口。
 
 ### `Such.template` <Badge text=">= 1.1.0" />
 

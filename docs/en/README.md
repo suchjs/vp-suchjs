@@ -32,7 +32,7 @@ The built-in `data attribute`s in `suchjs` include the following:
 
 - Function call -- The above `data attribute`s may not all required them for differenct data types, each data type may only support a few specific `data attribute`s, but the function call and the following configuration `data attribute`s are all types support by default. The function call `data attribute` starts with `@`, followed by a function call string list. The function to be used can be injected globally through the `Such.assign` static method, and the method that exists in the data type itself can be called directly. For example, for the string type: `:string:[65,90]:{3}:@repeat(3)|slice(-5)`, it means that after obtaining 3 uppercase letter strings, repeat 3 times, and then take the last 5 characters.
 
-- Parameter configuration -- Parameter configuration is the same as function call, and it is also the data attribute that the type supports parsed and obtained by default. It is usually used to provide external data injection for some defined types. The parameter configuration use a format of `#[key=value,flag]`. For example, for the auto-increment id type, if we want to configure its `start` value and `step`, we can configure `:id:#[start=1,step=2]` like this.
+- Parameter configuration -- Parameter configuration is the same as function call, and it is also the data attribute that the type supports parsed and obtained by default. It is usually used to provide external data injection for some defined types. The parameter configuration use a format of `#[key=value,flag]`. For example, for the auto-increment id type, if we want to configure its `start` value and `step`, we can configure `:increment:#[start=1,step=2]` like this.
 
 ### Mocking Data Example
 
