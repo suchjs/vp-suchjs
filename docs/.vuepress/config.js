@@ -62,7 +62,8 @@ module.exports = {
               '/types/ref.md',
               '/types/dict.md',
               '/types/cascader.md',
-              '/types/template.md'
+              '/types/template.md',
+              '/types/enum.md'
             ]
           },
           '/extTypes.md',
@@ -97,7 +98,8 @@ module.exports = {
               '/en/types/ref.md',
               '/en/types/dict.md',
               '/en/types/cascader.md',
-              '/en/types/template.md'
+              '/en/types/template.md',
+              '/en/types/enum.md'
             ]
           },
           '/en/extTypes.md',

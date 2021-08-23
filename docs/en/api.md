@@ -366,6 +366,8 @@ type IAInstanceOptions = {
     [key: string]: {
       min?: number;
       max?: number;
+      exist?: boolean;
+      index?: number;
     };
   };
 };
@@ -385,6 +387,8 @@ genOptional.a({
   keys: {
     "/optional": {
       // `max` is 0, which means that the number of occurrences of the `optional` field can only be 0
+      // This is equivalent to "exist: false"
+      // If the field is both optional and has an array length, you should just use "exist"
       max: 0,
     },
   },
@@ -394,6 +398,8 @@ genOptional.a({
   keys: {
     "/optional": {
       // `min` is 1, indicating that the number of occurrences of the optional field can only be 1
+      // This is equivalent to "exist: true"
+      // If the field is both optional and has an array length, you should just use "exist"
       min: 1,
     },
   },
@@ -424,6 +430,17 @@ genOptional.a({
     "/array": {
       min: 6,
       max: 6,
+    },
+  },
+});
+// For enumeration types, you can also specify the index value of the enumeration
+const genResult = Such.instance({
+  "errno{1}": [0, 1],
+});
+genResult.a({
+  keys: {
+    "/errno": {
+      index: 0,
     },
   },
 });

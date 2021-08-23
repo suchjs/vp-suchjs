@@ -355,6 +355,8 @@ type IAInstanceOptions = {
     [key: string]: {
       min?: number;
       max?: number;
+      exist?: boolean;
+      index?: number;
     };
   };
 };
@@ -374,6 +376,8 @@ genOptional.a({
   keys: {
     "/optional": {
       // max 为 0，表示 optional 字段出现次数只能为0
+      // 这里等价于 exist: false
+      // 如果字段为可选，同时具备数组长度值的话，应直接使用exist
       max: 0,
     },
   },
@@ -383,6 +387,8 @@ genOptional.a({
   keys: {
     "/optional": {
       // min 为 1，表示 optional 字段出现次数只能为1
+      // 这里等价于 exist: true
+      // 如果字段为可选，同时具备数组长度值的话，应直接使用exist
       min: 1,
     },
   },
@@ -416,6 +422,18 @@ genOptional.a({
     },
   },
 });
+// 针对枚举类型，还可以指定枚举的index值
+const genResult = Such.instance({
+  "errno{1}": [0, 1],
+});
+genResult.a({
+  keys: {
+    "/errno": {
+      index: 0,
+    },
+  },
+});
+// 以上示例生成 {errno: 0}
 ```
 
 ### `Such.as` <Badge text=">= 1.0.0" />

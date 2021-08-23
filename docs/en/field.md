@@ -51,6 +51,8 @@ Usually our actual data mocking is based on the `json` object, then we need conf
   };
   ```
 
+  Usually, our simulation data will be generated multiple times, but sometimes we need to precisely control whether the optional field exists, the specific length value of the array field, etc. Now, we can provide the specific `keys` parameter value when generating the simulation data , please refer to [keys configuration](./api.md#such-instance)
+
 ## Special value generation <Badge text=">= 1.0.0" />
 
 Since the data mocking of Suchjs is described in string format, how to distinguish between normal strings and data types & attributes becomes important. The data types in Suchjs all start with `:`, If you have a normal string also starting with a colon `:`, now you need to convert `:` with escaped `\\`. The escape character will be removed from the generated string at last. Examples are as follows:
