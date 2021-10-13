@@ -183,7 +183,7 @@ export default {
       } else {
         context = lastCode.replace("console.log(", "return (");
       }
-      const result = new Function("Such", context)(Such);
+      const result = new Function("Such", context)(Such.default);
       console.log("result", result);
       const { JSONFormatter } = this;
       const domOutputWrap = document.querySelector(".pg-output-wrap");
@@ -195,7 +195,7 @@ export default {
     import("json-formatter-js").then((module) => {
       this.JSONFormatter = module.default;
     });
-    new Function("Such", defRunCode)(Such);
+    new Function("Such", defRunCode)(Such.default);
   },
 };
 </script>
