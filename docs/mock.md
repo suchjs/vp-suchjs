@@ -16,9 +16,11 @@ src="https://cdn.jsdelivr.net/gh/suchjs/such@master/dist/such.min.js"
 src="https://cdn.jsdelivr.net/gh/suchjs/such-mock-browser@main/dist/such-mock-browser.min.js"
 ></script>
 <script>
-  // 挂载在Such.mock方法上的常量
-  const { target, method } = Such.mock;
+  const globalSuch = Such.default;
+  // 挂载在Such类prototype方法mock上的常量
+  const { target, method } = globalSuch.mock;
   /*
+   * 以下注释的Such指的Such对象的实例
    * Such.mock(
    *    pathname: string | RegExp,
    *    matcher: RequestMethod | string | ((req, params) => boolean)),
@@ -45,10 +47,10 @@ src="https://cdn.jsdelivr.net/gh/suchjs/such-mock-browser@main/dist/such-mock-br
    *   - 参数可以是一个响应对象，从而对默认响应数据进行覆盖
    *   - 参数也可以是一个注入了当前默认响应数据的函数，在函数体内可以对响应数据进行修改
    */
-  Such.mock("/a", method.GET, {
+  globalSuch.mock("/a", method.GET, {
     a: ":uppercase:{3,5}",
   });
-  Such.mock(/\/\w*/, "*", {
+  globalSuch.mock(/\/\w*/, "*", {
     any: "*",
   }, {
     // 这里将覆盖intercept时指定timeout
@@ -59,7 +61,7 @@ src="https://cdn.jsdelivr.net/gh/suchjs/such-mock-browser@main/dist/such-mock-br
   // 目前挂载在Such.mock上的target包含两种类型
   // - XHR 拦截XMLHttpRequest
   // - FETCH 拦截window.fetch方法
-  Such.mock.intercept(target.XHR | target.FETCH, {
+  globalSuch.mock.intercept(target.XHR | target.FETCH, {
     // 可以指定响应时间参数
     // [1000, 3000] 表示响应随机在1秒到3秒之间
     // 也可以是具体的数字，如 5000，5秒
@@ -80,10 +82,10 @@ src="https://cdn.jsdelivr.net/gh/suchjs/such-mock-browser@main/dist/such-mock-br
     }); 
   // 以上将输出 {any: '*'}
   // 解除拦截
-  Such.mock.unintercept();
+  globalSuch.mock.unintercept();
 </script>
 ```
 
 ## Nodejs 环境
 
-暂时没有提供对应的 mock 接口库。
+服务端情况下，一般通过接口直接返回模拟的值，所以没有提供对应的 mock 接口库。

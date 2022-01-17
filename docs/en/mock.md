@@ -16,9 +16,11 @@ src="https://cdn.jsdelivr.net/gh/suchjs/such@master/dist/such.min.js"
 src="https://cdn.jsdelivr.net/gh/suchjs/such-mock-browser@main/dist/such-mock-browser.min.js"
 ></script>
 <script>
-  // The 'target' and 'method' are enum constants mounted on the Such.mock.
-  const { target, method } = Such.mock;
+  const globalSuch = Such.default;
+  // Constants `target` and `method` are mounted on the Such class prototype method mock
+  const { target, method } = globalSuch.mock;
   /*
+   * The `Such` in the following annotations refer to the instance of the Such object.
    * Such.mock(
    *    pathname: string | RegExp,
    *    matcher: RequestMethod | string | ((req, params) => boolean)),
@@ -46,10 +48,10 @@ src="https://cdn.jsdelivr.net/gh/suchjs/such-mock-browser@main/dist/such-mock-br
    *  - The parameter can be a response object, thereby overwriting the default response data
    *  - The parameter can also be a function injected with the current default response data, and the response data can be modified in the function body
    */
-  Such.mock("/a", method.GET, {
+  globalSuch.mock("/a", method.GET, {
     a: ":uppercase:{3,5}",
   });
-  Such.mock(/\/\w*/, "*", {
+  globalSuch.mock(/\/\w*/, "*", {
     any: "*",
   }, {
     // it will override the `timeout` you setted in the `intercept` method
@@ -60,7 +62,7 @@ src="https://cdn.jsdelivr.net/gh/suchjs/such-mock-browser@main/dist/such-mock-br
   // The target currently mounted on Such.mock contains two types
   //   - XHR <intercepts XMLHttpRequest>
   //   - FETCH <intercepts window.fetch method>
-  Such.mock.intercept(target.XHR | target.FETCH,{
+  globalSuch.mock.intercept(target.XHR | target.FETCH,{
     // you can set the `timeout` of the response
     // [1000, 3000] indicates that the response is random between 1 second and 3 seconds
     // it can also be a specific number, such as '5000', means 5 seconds.
@@ -81,7 +83,7 @@ src="https://cdn.jsdelivr.net/gh/suchjs/such-mock-browser@main/dist/such-mock-br
     }); 
   // The above will output: {any: '*'}
   // remove the intercept
-  Such.mock.unintercept();
+  globalSuch.mock.unintercept();
 </script>
 ```
 
