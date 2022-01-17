@@ -23,7 +23,10 @@ src="https://cdn.jsdelivr.net/gh/suchjs/such-mock-browser@main/dist/such-mock-br
    *    pathname: string | RegExp,
    *    matcher: RequestMethod | string | ((req, params) => boolean)),
    *    data: (req, params) => data | unkown,
-   *    override?: (resp: MockResponse) => void | MockResponse
+   *    responseOptions?: {
+   *      timeout?: number,
+   *      transformer?: (resp: MockedResponse) => void | MockedResponse
+   *    }
    * );
    * Such.mock 接受三到四个参数
    * -----------------------------------------------
@@ -35,7 +38,7 @@ src="https://cdn.jsdelivr.net/gh/suchjs/such-mock-browser@main/dist/such-mock-br
    * data:
    *   - 可以是直接需要被 `Such.as` 调用的对象
    *   - 也可是一个提供了请求与路径参数的函数，这样可以在函数里处理逻辑再返回数据
-   * override:
+   * responseOptions:
    *   - 因为当以上pathname和matcher都匹配到后，就会按照data参数生成数据进行响应返回
    *   - 默认的响应是json格式数据
    *   - 但有时返回json格式数据可能不是你想要的，因此可以通过这里来进行覆写
@@ -47,12 +50,21 @@ src="https://cdn.jsdelivr.net/gh/suchjs/such-mock-browser@main/dist/such-mock-br
   });
   Such.mock(/\/\w*/, "*", {
     any: "*",
+  }, {
+    // 这里将覆盖intercept时指定timeout
+    // 可以为每个接口指定不同的响应时间范围
+    timeout: 6000
   });
   // 在最后需要执行拦截方法，接受的参数为一个需要被拦截的target类型
   // 目前挂载在Such.mock上的target包含两种类型
   // - XHR 拦截XMLHttpRequest
   // - FETCH 拦截window.fetch方法
-  Such.mock.intercept(target.XHR | target.FETCH);
+  Such.mock.intercept(target.XHR | target.FETCH, {
+    // 可以指定响应时间参数
+    // [1000, 3000] 表示响应随机在1秒到3秒之间
+    // 也可以是具体的数字，如 5000，5秒
+    timeout: [1000, 3000] 
+  });
   // 以使用jQuery为例
   $.get("/a", function (res) {
     console.log(res);
