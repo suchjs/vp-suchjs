@@ -12,7 +12,7 @@ description: suchjs built-in type cascader
 
   ##### In Nodejs
 
-  `:cascader:&<dataDir>/cascader.json:#[root=true]` Note: After v2.1.7, the `root` configuration parameter is no longer necessary, more concise.
+  `:cascader:&<dataDir>/cascader.json:#[root=true]`
 
   - `&` a path `data attribute` , followed by linkage data that needs to be pointed
 
@@ -24,7 +24,7 @@ description: suchjs built-in type cascader
 
   ##### In browser
 
-  `:cascader:#[root=true,data=xxx]`
+  `:cascader:#[root=true,data=xxx]` Note: After v2.1.7, the `root` configuration parameter is no longer necessary, more concise.
 
   Unlike the Nodejs environment, the browser needs to actively inject a `data` field by set a configuration `data attribute`.
 
