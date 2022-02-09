@@ -97,7 +97,10 @@ Such.assign('city', {
 });
 // define a new type
 Such.define('mobile$china', 'regexp', '/(\\\\+86\\\\-)?(?<service>1[3-8][0-9])\\\\d{8}/');
+// assign data
+Such.define('who', ["I'm", "He's", "She's"]);
 `;
+const globalSuch = Such.default;
 export default {
   props: {
     lang: {
@@ -107,29 +110,44 @@ export default {
   },
   data() {
     const origJson = {
-      errno: ":int:[0,1]",
-      errmsg: ':string{0,20}:@concat("_ok")',
-      "count?": ":number[1e5,1e6]:%d",
-      "list{1,3}": {
-        id: ":increment",
-        range: ":increment:#[start=0]:{3}",
-        address: {
-          province: ":cascader:#[root=true,data=city]",
-          city: ":cascader:&./province",
-          area: ":cascader:&./city",
-          fullWithRef: ':ref:&./province,./city,./area:@join("/")',
-          fullWithTmpl: ":::`:ref:&./province`,`:ref:&./city`,`:ref:&./area`",
-        },
-        regexp: ":regexp:/\\$[a-z]\\w*/",
-        email: ':email:#[domain="gmail.com"]',
-        mobile: ":mobile$china",
-        date: ":date:%yyyy-mm-dd HH\\:MM\\:ss",
-        price: ":number[100,200]:%.2f",
-        color: ":color$rgba",
-        isNew: ":boolean",
+      string: ":string:[65,121]:{10,20}:@concat('_suffix')",
+      number: ":number:[100,200]:%.2f",
+      date: ":date:['-1 week','+1 week']:%yyyy-mm-dd HH\\:MM\\:ss",
+      regexp: ":regexp:/[a-z]{1,3}[0-9]{2,10}/",
+      "id{2,4}": ":increment",
+      range: ":increment:{2,3}:#[start=2,step=3]",
+      ref: ":ref:&./number",
+      cascader: {
+        province: ":cascader:#[root=true,data=city]",
+        city: ":cascader:&./province",
+        area: ":cascader:&./city",
       },
-      "from{1}": ["Netflix", "Disney"],
-      notranslate: "\\:number",
+      "enum:{1}": ["one", "two"],
+      template: ":::`:who` coming from `:ref:&./cascader/province`-`:ref:&./cascader/city`-`:ref:&./cascader/area`",
+      diy: ":mobile$china",
+      escape: "\\:number",
+      extends: {
+        bool: ":bool",
+        int: ":int",
+        percent: ":percent",
+        uppercase: ":uppercase:{2,4}",
+        lowercase: ':lowercase:{2,4}',
+        alpha: ":alpha:{3,6}",
+        alphaNumeric: ":alphaNumeric:{3,6}",
+        alphaNumericDash: ":alphaNumericDash:{3,6}",
+        tld: ":tld",
+        domain: ":domain",
+        protocol: ":protocol",
+        url: ":url",
+        email: ":email:#[domain='163.com']",
+        ipv4: ":ipv4",
+        ipv6: ":ipv6",
+        color$hex: ":color$hex",
+        color$rgb: ":color$rgb",
+        color$rgba: ":color$rgba",
+        color$hsl: ":color$hsl",
+        color$hsla: ":color$hsla",
+      }
     };
     const origCode = JSON.stringify(origJson, null, 4);
     const i18n = {
@@ -154,9 +172,11 @@ export default {
     };
     return {
       code: origCode,
+      prevCode: origCode,
       origCode,
       origJson,
       defRunCode,
+      instance: null,
       result: "",
       texts: i18n[this.lang],
       JSONFormatter: null,
@@ -179,23 +199,25 @@ export default {
         (lastCode.endsWith("}") ||
           (lastCode = lastCode.replace(/;+$/, "")).endsWith("}"))
       ) {
-        context = "return Such.as(" + lastCode + ");";
+        context = "return Such.instance(" + lastCode + ");";
       } else {
         context = lastCode.replace("console.log(", "return (");
       }
-      const result = new Function("Such", context)(Such.default);
-      console.log("result", result);
+      if(!this.instance || this.code !== this.prevCode){
+        this.instance = new Function("Such", context)(globalSuch);
+      }
+      this.prevCode = this.code;
       const { JSONFormatter } = this;
       const domOutputWrap = document.querySelector(".pg-output-wrap");
       domOutputWrap.innerHTML = "";
-      domOutputWrap.appendChild(new JSONFormatter(result, 3).render());
+      domOutputWrap.appendChild(new JSONFormatter(this.instance.a(), 3).render());
     },
   },
   mounted() {
     import("json-formatter-js").then((module) => {
       this.JSONFormatter = module.default;
     });
-    new Function("Such", defRunCode)(Such.default);
+    new Function("Such", defRunCode)(globalSuch);
   },
 };
 </script>
