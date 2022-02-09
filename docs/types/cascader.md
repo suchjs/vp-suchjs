@@ -18,13 +18,13 @@ description: suchjs内置类型cascader
 
   - `#[]` 配置参数数据属性，包含两个参数
 
-    - `root` 必选，需要标记为 true
+    - `root` 必选，需要标记为 true。
 
     - `handle` 可选，处理级联的函数句柄，函数包含两个参数，第一个参数为从路径获取到的联动数据，第二个参数为已经获取到的从第一层到当前层的数据数组。如不提供，Suchjs 默认提供了一个处理对象形式数据的处理函数。可以参见源代码里的 src/helpers/utils.ts
 
   ##### 针对浏览器环境
 
-  `:cascader:#[root=true,data=xxx]`
+  `:cascader:#[root=true,data=xxx]` 注：从v2.1.7后，`root` 配置参数不再必须，更加简洁。
 
   和 Nodejs 环境不一样，浏览器下需要和 dict 词典一样主动注入一个 data 参数数据，以替代 Nodejs 环境下通过文件路径获取数据的形式。
 
