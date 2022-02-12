@@ -114,9 +114,16 @@ export default {
       number: ":number:[100,200]:%.2f",
       date: ":date:['-1 week','+1 week']:%yyyy-mm-dd HH\\:MM\\:ss",
       regexp: ":regexp:/[a-z]{1,3}[0-9]{2,10}/",
-      "id{2,4}": ":increment",
       range: ":increment:{2,3}:#[start=2,step=3]",
-      ref: ":ref:&./number",
+      "menu{2}": {
+        id:":increment",
+        title: ":uppercase:{5,10}",
+        "childs{2}": {
+          "cid": ":increment",
+          "refPid":":ref:&../id",
+          title: ":lowercase:{5,10}"
+        }
+      },
       cascader: {
         province: ":cascader:#[root=true,data=city]",
         city: ":cascader:&./province",
@@ -209,8 +216,10 @@ export default {
       this.prevCode = this.code;
       const { JSONFormatter } = this;
       const domOutputWrap = document.querySelector(".pg-output-wrap");
+      const formatter = new JSONFormatter(this.instance.a(), 3);
       domOutputWrap.innerHTML = "";
-      domOutputWrap.appendChild(new JSONFormatter(this.instance.a(), 3).render());
+      domOutputWrap.appendChild(formatter.render());
+      formatter.openAtDepth(Infinity);
     },
   },
   mounted() {
