@@ -88,4 +88,4 @@ src="https://cdn.jsdelivr.net/gh/suchjs/such-mock-browser@main/dist/such-mock-br
 
 ## Nodejs 环境
 
-服务端情况下，一般通过接口直接返回模拟的值，所以没有提供对应的 mock 接口库。
+在 `nodejs` 环境下，可在项目中安装 `such-cli` 包，在本地来启动一个 `mock server` 服务。详细的介绍可以参看[such-cli命令行工具](https://github.com/suchjs/such-cli)。

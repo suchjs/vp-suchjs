@@ -89,4 +89,4 @@ src="https://cdn.jsdelivr.net/gh/suchjs/such-mock-browser@main/dist/such-mock-br
 
 ## Nodejs Environment
 
-No corresponding library for Nodejs is provided for the time being.
+In the `nodejs` environment, you can install the `such-cli` package in the project to start a `mock server` service locally. For a detailed introduction, please refer to [such-cli command line tool](https://github.com/suchjs/such-cli).
